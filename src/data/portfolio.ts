@@ -79,7 +79,6 @@ export interface PortfolioData {
   };
   education: EducationItem[];
   featuredProject: ProjectItem;
-  otherProjects: ProjectItem[];
   achievements: AchievementItem[];
   futureCoaTools: {
     id: string;
@@ -196,36 +195,6 @@ export const portfolioData: PortfolioData = {
     ],
     featured: true,
   },
-
-  otherProjects: [
-    {
-      title: "Student Management System",
-      category: "Software Development & Systems",
-      description:
-        "Developed a student-focused management application demonstrating practical programming fundamentals, modular architecture, and structured data handling.",
-      repoUrl:
-        "https://github.com/SubarnaLodh/25BAI10051-Student-Management-System.git",
-      tags: ["Python / C++", "Data Management", "CLI / GUI", "Algorithms"],
-    },
-    {
-      title: "Cyber Threat Dashboard",
-      category: "Security & Monitoring",
-      description:
-        "Conceptualized and developed an interactive dashboard interface for monitoring security events, network indicators, and real-time threat intelligence feeds.",
-      repoUrl:
-        "https://github.com/SubarnaLodh/v0-cyber-threat-dashboard.git",
-      tags: ["Dashboard", "UI / UX", "Threat Analytics", "Web Technologies"],
-    },
-    {
-      title: "Weather Forecasting Application",
-      category: "APIs & Python Applications",
-      description:
-        "Built a Python GUI application that fetches real-time weather data through the OpenWeather API, allowing users to search cities and view temperature, humidity, and wind speed with strict input validation.",
-      repoUrl:
-        "https://github.com/SubarnaLodh/25bai10051_python-weather-app.git",
-      tags: ["Python", "OpenWeather API", "GUI Application", "REST API"],
-    },
-  ],
 
   achievements: [
     {
