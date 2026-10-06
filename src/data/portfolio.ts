@@ -80,14 +80,6 @@ export interface PortfolioData {
   education: EducationItem[];
   featuredProject: ProjectItem;
   achievements: AchievementItem[];
-  futureCoaTools: {
-    id: string;
-    title: string;
-    category: string;
-    description: string;
-    status: string;
-    features: string[];
-  }[];
   assignments: AssignmentItem[];
 }
 
@@ -237,100 +229,6 @@ export const portfolioData: PortfolioData = {
         "COA Assignment I & lecture question analysis",
         "Instruction Set simulation tooling",
         "Interactive number system converter implementation",
-      ],
-    },
-  ],
-
-  futureCoaTools: [
-    {
-      id: "binary-arithmetic",
-      title: "Binary Arithmetic Calculator",
-      category: "Arithmetic Logic Unit (ALU)",
-      description:
-        "Interactive ALU simulator for addition, subtraction, multiplication, and division with carry/borrow propagation flags.",
-      status: "COMING SOON",
-      features: [
-        "Binary Addition & Subtraction",
-        "Sign and Overflow Flag Detection",
-        "Multiplication via Shift-and-Add",
-      ],
-    },
-    {
-      id: "complements-calc",
-      title: "1's & 2's Complement Calculator",
-      category: "Signed Number Representation",
-      description:
-        "Computes 1's and 2's complement of n-bit signed integers with step-by-step bitwise inversion and arithmetic verification.",
-      status: "COMING SOON",
-      features: [
-        "Configurable bit widths (8, 16, 32)",
-        "Negative number binary encoding",
-        "Direct subtraction using complements",
-      ],
-    },
-    {
-      id: "cache-mapping",
-      title: "Cache Mapping Calculator",
-      category: "Memory Hierarchy",
-      description:
-        "Calculate Tag, Set/Line, and Word Offset fields for Direct Mapped, Fully Associative, and N-Way Set Associative caches.",
-      status: "COMING SOON",
-      features: [
-        "Tag, Set Index & Word Offset bits",
-        "Direct, Associative, & N-Way",
-        "Hit / Miss trace analysis",
-      ],
-    },
-    {
-      id: "physical-address",
-      title: "Physical Address Calculator",
-      category: "Processor Architecture",
-      description:
-        "Simulates real-mode segment:offset calculations and protected-mode descriptor table base addition for physical memory calculation.",
-      status: "COMING SOON",
-      features: [
-        "Segment × 16 + Offset computation",
-        "Hexadecimal address breakdown",
-        "Memory segment boundary checks",
-      ],
-    },
-    {
-      id: "paging-translator",
-      title: "Paging Address Translator",
-      category: "Virtual Memory",
-      description:
-        "Translate logical/virtual addresses to physical addresses using single-level and multi-level page tables with TLB lookup checks.",
-      status: "COMING SOON",
-      features: [
-        "Page Number & Page Offset split",
-        "Frame Number translation",
-        "Page fault & TLB hit status",
-      ],
-    },
-    {
-      id: "page-replacement",
-      title: "Page Replacement Simulator",
-      category: "Operating Systems & Architecture",
-      description:
-        "Visual simulation of FIFO, LRU, and Optimal page replacement algorithms showing reference strings and page fault metrics.",
-      status: "COMING SOON",
-      features: [
-        "Step-by-step frame state table",
-        "Page fault counter & hit ratio",
-        "FIFO vs LRU side-by-side comparison",
-      ],
-    },
-    {
-      id: "cpu-scheduling",
-      title: "CPU Scheduling Simulator",
-      category: "Processor Control",
-      description:
-        "Gantt chart generator and turnaround/waiting time calculator for FCFS, SJF (Preemptive/Non-preemptive), and Round Robin scheduling.",
-      status: "COMING SOON",
-      features: [
-        "Visual Gantt chart generation",
-        "Average Turnaround & Waiting time",
-        "Arrival time & Burst time tables",
       ],
     },
   ],
