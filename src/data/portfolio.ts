@@ -41,6 +41,15 @@ export interface AchievementItem {
   highlights: string[];
 }
 
+export interface FutureCoaTool {
+  id: string;
+  title: string;
+  category: string;
+  description: string;
+  status: "ACTIVE" | "COMING SOON" | "IN DEVELOPMENT";
+  features: string[];
+}
+
 export interface PortfolioData {
   student: {
     name: string;
@@ -79,6 +88,8 @@ export interface PortfolioData {
   };
   education: EducationItem[];
   featuredProject: ProjectItem;
+  otherProjects: ProjectItem[];
+  futureCoaTools: FutureCoaTool[];
   achievements: AchievementItem[];
   assignments: AssignmentItem[];
 }
@@ -187,6 +198,117 @@ export const portfolioData: PortfolioData = {
     ],
     featured: true,
   },
+
+  otherProjects: [
+    {
+      title: "Student Management System",
+      category: "Software Development & Systems",
+      description:
+        "Developed a student-focused management application demonstrating practical programming fundamentals, modular architecture, and structured data handling.",
+      repoUrl:
+        "https://github.com/SubarnaLodh/25BAI10051-Student-Management-System.git",
+      tags: ["Python / C++", "Data Management", "CLI / GUI", "Algorithms"],
+    },
+    {
+      title: "Cyber Threat Dashboard",
+      category: "Security & Monitoring",
+      description:
+        "Conceptualized and developed an interactive dashboard interface for monitoring security events, network indicators, and real-time threat intelligence feeds.",
+      repoUrl:
+        "https://github.com/SubarnaLodh/v0-cyber-threat-dashboard.git",
+      tags: ["Dashboard", "UI / UX", "Threat Analytics", "Web Technologies"],
+    },
+    {
+      title: "Weather Forecasting Application",
+      category: "APIs & Python Applications",
+      description:
+        "Built a Python GUI application that fetches real-time weather data through the OpenWeather API, allowing users to search cities and view temperature, humidity, and wind speed with strict input validation.",
+      repoUrl:
+        "https://github.com/SubarnaLodh/25bai10051_python-weather-app.git",
+      tags: ["Python", "OpenWeather API", "GUI Application", "REST API"],
+    },
+  ],
+
+  futureCoaTools: [
+    {
+      id: "binary-arithmetic",
+      title: "Binary Arithmetic & ALU Calculator",
+      category: "Arithmetic Logic Unit (ALU)",
+      description:
+        "Interactive ALU simulator for binary addition, subtraction via 2's complement, bitwise logic, and CPU status flags (Zero, Carry, Sign, Overflow).",
+      status: "ACTIVE",
+      features: [
+        "Binary Addition & Subtraction",
+        "Sign, Zero, Carry & Overflow Flags",
+        "1's & 2's Complement Generator",
+      ],
+    },
+    {
+      id: "cache-mapping",
+      title: "Cache Mapping Calculator",
+      category: "Memory Hierarchy",
+      description:
+        "Calculate Tag, Set/Line, and Word Offset fields for Direct Mapped, Fully Associative, and N-Way Set Associative caches.",
+      status: "COMING SOON",
+      features: [
+        "Tag, Set Index & Word Offset bits",
+        "Direct, Associative, & N-Way",
+        "Hit / Miss trace analysis",
+      ],
+    },
+    {
+      id: "physical-address",
+      title: "Physical Address Calculator",
+      category: "Processor Architecture",
+      description:
+        "Simulates real-mode segment:offset calculations and protected-mode descriptor table base addition for physical memory calculation.",
+      status: "COMING SOON",
+      features: [
+        "Segment × 16 + Offset computation",
+        "Hexadecimal address breakdown",
+        "Memory segment boundary checks",
+      ],
+    },
+    {
+      id: "paging-translator",
+      title: "Paging Address Translator",
+      category: "Virtual Memory",
+      description:
+        "Translate logical/virtual addresses to physical addresses using single-level and multi-level page tables with TLB lookup checks.",
+      status: "COMING SOON",
+      features: [
+        "Page Number & Page Offset split",
+        "Frame Number translation",
+        "Page fault & TLB hit status",
+      ],
+    },
+    {
+      id: "page-replacement",
+      title: "Page Replacement Simulator",
+      category: "Operating Systems & Architecture",
+      description:
+        "Visual simulation of FIFO, LRU, and Optimal page replacement algorithms showing reference strings and page fault metrics.",
+      status: "COMING SOON",
+      features: [
+        "Step-by-step frame state table",
+        "Page fault counter & hit ratio",
+        "FIFO vs LRU side-by-side comparison",
+      ],
+    },
+    {
+      id: "cpu-scheduling",
+      title: "CPU Scheduling Simulator",
+      category: "Processor Control",
+      description:
+        "Gantt chart generator and turnaround/waiting time calculator for FCFS, SJF (Preemptive/Non-preemptive), and Round Robin scheduling.",
+      status: "COMING SOON",
+      features: [
+        "Visual Gantt chart generation",
+        "Average Turnaround & Waiting time",
+        "Arrival time & Burst time tables",
+      ],
+    },
+  ],
 
   achievements: [
     {

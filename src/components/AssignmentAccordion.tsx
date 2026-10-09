@@ -1,15 +1,13 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { portfolioData, AssignmentItem } from "@/data/portfolio";
+import { portfolioData } from "@/data/portfolio";
 import {
   BookOpen,
   ChevronDown,
   ChevronUp,
   Search,
   FileText,
-  User,
-  GraduationCap,
   Sparkles,
   ExternalLink,
   Layers,

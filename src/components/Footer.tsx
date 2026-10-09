@@ -72,7 +72,7 @@ export default function Footer() {
               </li>
               <li>
                 <a href="#project" className="hover:text-cyan-400 transition-colors">
-                  Project
+                  Projects
                 </a>
               </li>
               <li>

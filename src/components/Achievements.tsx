@@ -9,7 +9,6 @@ import {
   Calendar,
   X,
   Maximize2,
-  ExternalLink,
   Sparkles,
 } from "lucide-react";
 

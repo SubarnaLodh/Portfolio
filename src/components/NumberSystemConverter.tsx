@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect, useId } from "react";
+import React, { useState, useMemo, useId } from "react";
 import {
   ArrowLeftRight,
   RotateCcw,
@@ -64,6 +64,190 @@ const BASES: Record<BaseType, BaseConfig> = {
   },
 };
 
+interface ConversionResult {
+  result: string;
+  errorMessage: string;
+  allEquivalents: {
+    binary: string;
+    decimal: string;
+    octal: string;
+    hexadecimal: string;
+  } | null;
+  steps: string[];
+  detailedMath: string;
+}
+
+function calculateConversion(
+  rawInput: string,
+  from: BaseType,
+  to: BaseType
+): ConversionResult {
+  const trimmed = rawInput.trim();
+
+  if (!trimmed) {
+    return {
+      result: "",
+      errorMessage: "",
+      allEquivalents: null,
+      steps: [],
+      detailedMath: "",
+    };
+  }
+
+  const config = BASES[from];
+
+  // Validate characters
+  if (!config.regex.test(trimmed)) {
+    return {
+      result: "",
+      errorMessage: `Invalid ${config.name} number. Only characters allowed: ${config.allowedChars}.`,
+      allEquivalents: null,
+      steps: [],
+      detailedMath: "",
+    };
+  }
+
+  try {
+    // Parse to integer via BigInt for arbitrary precision support
+    let decimalBig: bigint;
+
+    if (from === "binary") {
+      decimalBig = BigInt(`0b${trimmed}`);
+    } else if (from === "octal") {
+      decimalBig = BigInt(`0o${trimmed}`);
+    } else if (from === "hexadecimal") {
+      decimalBig = BigInt(`0x${trimmed}`);
+    } else {
+      decimalBig = BigInt(trimmed);
+    }
+
+    // Convert to targets
+    const binStr = decimalBig.toString(2);
+    const decStr = decimalBig.toString(10);
+    const octStr = decimalBig.toString(8);
+    const hexStr = decimalBig.toString(16).toUpperCase();
+
+    let targetResult = "";
+    if (to === "binary") targetResult = binStr;
+    else if (to === "decimal") targetResult = decStr;
+    else if (to === "octal") targetResult = octStr;
+    else if (to === "hexadecimal") targetResult = hexStr;
+
+    const inputClean = trimmed.toUpperCase();
+    const explanationSteps: string[] = [];
+    let detailedMath = `${inputClean}₍${BASES[from].subscript}₎ = ${targetResult}₍${BASES[to].subscript}₎`;
+
+    // Case 1: Same base
+    if (from === to) {
+      detailedMath = `${inputClean} (${BASES[from].name}) = ${inputClean} (${BASES[to].name})`;
+      explanationSteps.push("Both source and destination bases are identical. No conversion required.");
+    } else {
+      // Step A: Convert from 'from' base to Decimal (if not already decimal)
+      if (from !== "decimal") {
+        const baseNum = BASES[from].base;
+        const chars = inputClean.split("").reverse();
+        const terms: string[] = [];
+
+        chars.forEach((char, power) => {
+          terms.push(`(${char} × ${baseNum}^${power})`);
+        });
+
+        const formulaStr = terms.reverse().join(" + ");
+        explanationSteps.push(
+          `Step 1: Convert ${BASES[from].name} to Decimal using positional notation:`
+        );
+        explanationSteps.push(
+          `${inputClean}₍${BASES[from].subscript}₎ = ${formulaStr}`
+        );
+        explanationSteps.push(`= ${decimalBig.toString(10)}₍10₎`);
+      }
+
+      // Step B: Convert Decimal to destination base (if 'to' is not decimal)
+      if (to !== "decimal") {
+        const targetBase = BASES[to].base;
+        explanationSteps.push(
+          `Step ${from === "decimal" ? "1" : "2"}: Convert Decimal ${decimalBig.toString(10)}₍10₎ to ${BASES[to].name} (Base ${targetBase}):`
+        );
+
+        // Successive division trace
+        let current = decimalBig;
+        const divisionLines: string[] = [];
+        if (current === BigInt(0)) {
+          divisionLines.push(`0 ÷ ${targetBase} = Quotient 0, Remainder 0`);
+        } else {
+          while (current > BigInt(0)) {
+            const quotient = current / BigInt(targetBase);
+            const remainder = current % BigInt(targetBase);
+            const remChar =
+              remainder < BigInt(10)
+                ? remainder.toString()
+                : String.fromCharCode(55 + Number(remainder));
+            divisionLines.push(
+              `${current} ÷ ${targetBase} = ${quotient} with remainder ${remChar} (${remainder})`
+            );
+            current = quotient;
+          }
+        }
+
+        divisionLines.forEach((line) => explanationSteps.push(`  • ${line}`));
+        explanationSteps.push(
+          `Read remainders from bottom to top: ${targetResult}₍${BASES[to].subscript}₎`
+        );
+      }
+
+      // Specific direct grouping insight for Binary <-> Octal / Hexadecimal
+      if (from === "binary" && to === "octal") {
+        explanationSteps.push(
+          `Shortcut Method: Group binary bits into sets of 3 from right to left:`
+        );
+        const padLen = (3 - (inputClean.length % 3)) % 3;
+        const padded = "0".repeat(padLen) + inputClean;
+        const chunks: string[] = [];
+        for (let i = 0; i < padded.length; i += 3) {
+          const chunk = padded.substring(i, i + 3);
+          const octDigit = parseInt(chunk, 2).toString(8);
+          chunks.push(`${chunk}₂ → ${octDigit}₈`);
+        }
+        explanationSteps.push(`  • [${chunks.join(", ")}] = ${targetResult}₈`);
+      } else if (from === "binary" && to === "hexadecimal") {
+        explanationSteps.push(
+          `Shortcut Method: Group binary bits into sets of 4 from right to left:`
+        );
+        const padLen = (4 - (inputClean.length % 4)) % 4;
+        const padded = "0".repeat(padLen) + inputClean;
+        const chunks: string[] = [];
+        for (let i = 0; i < padded.length; i += 4) {
+          const chunk = padded.substring(i, i + 4);
+          const hexDigit = parseInt(chunk, 2).toString(16).toUpperCase();
+          chunks.push(`${chunk}₂ → ${hexDigit}₁₆`);
+        }
+        explanationSteps.push(`  • [${chunks.join(", ")}] = ${targetResult}₁₆`);
+      }
+    }
+
+    return {
+      result: targetResult,
+      errorMessage: "",
+      allEquivalents: {
+        binary: binStr,
+        decimal: decStr,
+        octal: octStr,
+        hexadecimal: hexStr,
+      },
+      steps: explanationSteps,
+      detailedMath,
+    };
+  } catch {
+    return {
+      result: "",
+      errorMessage: "Numerical value out of range or unsupported format.",
+      allEquivalents: null,
+      steps: [],
+      detailedMath: "",
+    };
+  }
+}
+
 export default function NumberSystemConverter() {
   const numberInputId = useId();
   const fromSelectId = useId();
@@ -72,211 +256,18 @@ export default function NumberSystemConverter() {
   const [inputVal, setInputVal] = useState<string>("101101");
   const [fromBase, setFromBase] = useState<BaseType>("binary");
   const [toBase, setToBase] = useState<BaseType>("decimal");
-  
-  const [result, setResult] = useState<string>("");
-  const [errorMessage, setErrorMessage] = useState<string>("");
-  const [allEquivalents, setAllEquivalents] = useState<{
-    binary: string;
-    decimal: string;
-    octal: string;
-    hexadecimal: string;
-  } | null>(null);
-  
   const [copied, setCopied] = useState<boolean>(false);
-  const [steps, setSteps] = useState<string[]>([]);
-  const [detailedMath, setDetailedMath] = useState<string>("");
+  const [triggerPulse, setTriggerPulse] = useState<boolean>(false);
 
-  // Core conversion engine
-  const performConversion = (
-    value: string = inputVal,
-    from: BaseType = fromBase,
-    to: BaseType = toBase
-  ) => {
-    const trimmed = value.trim();
-
-    if (!trimmed) {
-      setResult("");
-      setErrorMessage("");
-      setAllEquivalents(null);
-      setSteps([]);
-      setDetailedMath("");
-      return;
-    }
-
-    const config = BASES[from];
-
-    // Validate characters
-    if (!config.regex.test(trimmed)) {
-      setErrorMessage(
-        `Invalid ${config.name} number. Only characters allowed: ${config.allowedChars}.`
-      );
-      setResult("");
-      setAllEquivalents(null);
-      setSteps([]);
-      setDetailedMath("");
-      return;
-    }
-
-    setErrorMessage("");
-
-    try {
-      // Parse to integer via BigInt for arbitrary precision support
-      let decimalBig: bigint;
-
-      if (from === "binary") {
-        decimalBig = BigInt(`0b${trimmed}`);
-      } else if (from === "octal") {
-        decimalBig = BigInt(`0o${trimmed}`);
-      } else if (from === "hexadecimal") {
-        decimalBig = BigInt(`0x${trimmed}`);
-      } else {
-        decimalBig = BigInt(trimmed);
-      }
-
-      // Convert to targets
-      const binStr = decimalBig.toString(2);
-      const decStr = decimalBig.toString(10);
-      const octStr = decimalBig.toString(8);
-      const hexStr = decimalBig.toString(16).toUpperCase();
-
-      let targetResult = "";
-      if (to === "binary") targetResult = binStr;
-      else if (to === "decimal") targetResult = decStr;
-      else if (to === "octal") targetResult = octStr;
-      else if (to === "hexadecimal") targetResult = hexStr;
-
-      setResult(targetResult);
-
-      setAllEquivalents({
-        binary: binStr,
-        decimal: decStr,
-        octal: octStr,
-        hexadecimal: hexStr,
-      });
-
-      // Generate step-by-step mathematical explanation
-      generateExplanation(trimmed, from, to, decimalBig, targetResult);
-    } catch {
-      setErrorMessage("Numerical value out of range or unsupported format.");
-      setResult("");
-      setAllEquivalents(null);
-      setSteps([]);
-      setDetailedMath("");
-    }
-  };
-
-  const generateExplanation = (
-    rawInput: string,
-    from: BaseType,
-    to: BaseType,
-    decimalVal: bigint,
-    convertedVal: string
-  ) => {
-    const inputClean = rawInput.toUpperCase();
-    const explanationSteps: string[] = [];
-
-    // Case 1: Same base
-    if (from === to) {
-      setDetailedMath(`${inputClean} (${BASES[from].name}) = ${inputClean} (${BASES[to].name})`);
-      setSteps(["Both source and destination bases are identical. No conversion required."]);
-      return;
-    }
-
-    // Step A: Convert from 'from' base to Decimal (if not already decimal)
-    if (from !== "decimal") {
-      const baseNum = BASES[from].base;
-      const chars = inputClean.split("").reverse();
-      const terms: string[] = [];
-      const expandedVals: string[] = [];
-
-      chars.forEach((char, power) => {
-        const digitVal = parseInt(char, baseNum);
-        terms.push(`(${char} × ${baseNum}^${power})`);
-        expandedVals.push(`${digitVal * Math.pow(baseNum, power)}`);
-      });
-
-      const formulaStr = terms.reverse().join(" + ");
-      explanationSteps.push(
-        `Step 1: Convert ${BASES[from].name} to Decimal using positional notation:`
-      );
-      explanationSteps.push(
-        `${inputClean}₍${BASES[from].subscript}₎ = ${formulaStr}`
-      );
-      explanationSteps.push(
-        `= ${decimalVal.toString(10)}₍10₎`
-      );
-    }
-
-    // Step B: Convert Decimal to destination base (if 'to' is not decimal)
-    if (to !== "decimal") {
-      const targetBase = BASES[to].base;
-      explanationSteps.push(
-        `Step ${from === "decimal" ? "1" : "2"}: Convert Decimal ${decimalVal.toString(10)}₍10₎ to ${BASES[to].name} (Base ${targetBase}):`
-      );
-
-      // Successive division trace
-      let current = decimalVal;
-      const divisionLines: string[] = [];
-      if (current === BigInt(0)) {
-        divisionLines.push(`0 ÷ ${targetBase} = Quotient 0, Remainder 0`);
-      } else {
-        while (current > BigInt(0)) {
-          const quotient = current / BigInt(targetBase);
-          const remainder = current % BigInt(targetBase);
-          const remChar = remainder < BigInt(10) ? remainder.toString() : String.fromCharCode(55 + Number(remainder));
-          divisionLines.push(
-            `${current} ÷ ${targetBase} = ${quotient} with remainder ${remChar} (${remainder})`
-          );
-          current = quotient;
-        }
-      }
-
-      divisionLines.forEach((line) => explanationSteps.push(`  • ${line}`));
-      explanationSteps.push(
-        `Read remainders from bottom to top: ${convertedVal}₍${BASES[to].subscript}₎`
-      );
-    }
-
-    // Specific direct grouping insight for Binary <-> Octal / Hexadecimal
-    if (from === "binary" && to === "octal") {
-      explanationSteps.push(
-        `Shortcut Method: Group binary bits into sets of 3 from right to left:`
-      );
-      const padLen = (3 - (inputClean.length % 3)) % 3;
-      const padded = "0".repeat(padLen) + inputClean;
-      const chunks: string[] = [];
-      for (let i = 0; i < padded.length; i += 3) {
-        const chunk = padded.substring(i, i + 3);
-        const octDigit = parseInt(chunk, 2).toString(8);
-        chunks.push(`${chunk}₂ → ${octDigit}₈`);
-      }
-      explanationSteps.push(`  • [${chunks.join(", ")}] = ${convertedVal}₈`);
-    } else if (from === "binary" && to === "hexadecimal") {
-      explanationSteps.push(
-        `Shortcut Method: Group binary bits into sets of 4 from right to left:`
-      );
-      const padLen = (4 - (inputClean.length % 4)) % 4;
-      const padded = "0".repeat(padLen) + inputClean;
-      const chunks: string[] = [];
-      for (let i = 0; i < padded.length; i += 4) {
-        const chunk = padded.substring(i, i + 4);
-        const hexDigit = parseInt(chunk, 2).toString(16).toUpperCase();
-        chunks.push(`${chunk}₂ → ${hexDigit}₁₆`);
-      }
-      explanationSteps.push(`  • [${chunks.join(", ")}] = ${convertedVal}₁₆`);
-    }
-
-    setSteps(explanationSteps);
-    setDetailedMath(
-      `${inputClean}₍${BASES[from].subscript}₎ = ${convertedVal}₍${BASES[to].subscript}₎`
-    );
-  };
-
-  // Run automatically when inputs change
-  useEffect(() => {
-    performConversion(inputVal, fromBase, toBase);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // Derive conversion data synchronously with zero cascading renders
+  const { result, errorMessage, allEquivalents, steps, detailedMath } = useMemo(() => {
+    return calculateConversion(inputVal, fromBase, toBase);
   }, [inputVal, fromBase, toBase]);
+
+  const handleConvertNow = () => {
+    setTriggerPulse(true);
+    setTimeout(() => setTriggerPulse(false), 500);
+  };
 
   // Swap Bases
   const handleSwap = () => {
@@ -288,18 +279,12 @@ export default function NumberSystemConverter() {
     // If we have a valid result, use it as the new input
     if (result && !errorMessage) {
       setInputVal(result);
-      performConversion(result, newFrom, newTo);
     }
   };
 
   // Clear Input
   const handleClear = () => {
     setInputVal("");
-    setResult("");
-    setErrorMessage("");
-    setAllEquivalents(null);
-    setSteps([]);
-    setDetailedMath("");
   };
 
   // Copy Result
@@ -319,7 +304,6 @@ export default function NumberSystemConverter() {
     setInputVal(val);
     setFromBase(from);
     setToBase(to);
-    performConversion(val, from, to);
   };
 
   return (
@@ -493,10 +477,14 @@ export default function NumberSystemConverter() {
           <div className="flex items-center gap-3">
             <button
               type="button"
-              onClick={() => performConversion(inputVal, fromBase, toBase)}
-              className="px-6 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm shadow-sm transition-all hover:shadow focus:outline-none focus:ring-2 focus:ring-blue-500"
+              onClick={handleConvertNow}
+              className={`px-6 py-3 rounded-xl font-semibold text-sm shadow-sm transition-all focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+                triggerPulse
+                  ? "bg-emerald-600 text-white scale-95"
+                  : "bg-blue-700 hover:bg-blue-800 text-white hover:shadow"
+              }`}
             >
-              Convert Now
+              {triggerPulse ? "Calculated ✓" : "Convert Now"}
             </button>
             <button
               type="button"

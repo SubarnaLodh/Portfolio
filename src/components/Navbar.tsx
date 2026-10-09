@@ -19,8 +19,9 @@ export default function Navbar() {
   const navLinks = [
     { label: "Home", href: "#hero" },
     { label: "About Me", href: "#about" },
+    { label: "Education", href: "#education" },
     { label: "COA Tools", href: "#coa-tools" },
-    { label: "Project", href: "#project" },
+    { label: "Projects", href: "#project" },
     { label: "Achievements", href: "#achievements" },
     { label: "Assignments", href: "#assignments" },
     { label: "Contact", href: "#contact" },

@@ -8,15 +8,26 @@ import {
   Cpu,
   GitBranch,
   Terminal,
+  Layers,
+  ArrowUpRight,
+  Shield,
+  CloudSun,
+  Users,
 } from "lucide-react";
 import { GitHubIcon } from "@/components/Icons";
 
 export default function FeaturedProject() {
-  const { featuredProject } = portfolioData;
+  const { featuredProject, otherProjects } = portfolioData;
+
+  const otherProjectIcons: Record<string, React.ReactNode> = {
+    "Student Management System": <Users className="w-5 h-5 text-indigo-600" />,
+    "Cyber Threat Dashboard": <Shield className="w-5 h-5 text-rose-600" />,
+    "Weather Forecasting Application": <CloudSun className="w-5 h-5 text-amber-600" />,
+  };
 
   return (
     <section id="project" className="py-16 sm:py-24 bg-white border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
         
         {/* Section Header */}
         <div className="text-center max-w-3xl mx-auto space-y-3">
@@ -25,14 +36,14 @@ export default function FeaturedProject() {
             <span>Academic Software Engineering</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-            Featured Project
+            Featured Projects & Systems
           </h2>
           <p className="text-base text-slate-600">
-            Hardware-software co-design and architectural simulation highlighting core Computer Organization principles.
+            Hardware-software co-design, architectural simulation, and verified technical software projects.
           </p>
         </div>
 
-        {/* Featured Project Showcase Card */}
+        {/* Featured Project Showcase Card (Instruction Set Simulator) */}
         <div className="max-w-5xl mx-auto">
           <div className="relative bg-gradient-to-br from-slate-950 via-blue-950 to-slate-900 rounded-3xl p-8 sm:p-12 text-white shadow-xl border border-slate-800 overflow-hidden">
             
@@ -120,7 +131,7 @@ export default function FeaturedProject() {
 
                   {/* Simulated ISA Pipeline */}
                   <div className="space-y-2 text-slate-300">
-                    <p className="text-slate-500">// Fetch - Decode - Execute Simulation</p>
+                    <p className="text-slate-500">{"// Fetch - Decode - Execute Simulation"}</p>
                     <div className="p-2.5 rounded bg-slate-950 border border-slate-800/80 space-y-1">
                       <p className="text-blue-400">PC: 0x0040 [FETCH]</p>
                       <p className="text-amber-300">INSTRUCTION: LOAD R1, [0x1024]</p>
@@ -145,6 +156,73 @@ export default function FeaturedProject() {
 
           </div>
         </div>
+
+        {/* Additional Verified Technical Projects Grid */}
+        {otherProjects && otherProjects.length > 0 && (
+          <div className="space-y-8 pt-4 max-w-5xl mx-auto">
+            <div className="text-center max-w-2xl mx-auto space-y-1">
+              <h3 className="text-2xl font-bold text-slate-900">
+                Additional Technical Projects
+              </h3>
+              <p className="text-sm text-slate-500">
+                Verified repositories and practical applications spanning data structures, security, and Python engineering.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {otherProjects.map((proj) => (
+                <div
+                  key={proj.title}
+                  className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+                >
+                  <div className="space-y-4">
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-xs">
+                        {otherProjectIcons[proj.title] || <Layers className="w-5 h-5 text-blue-600" />}
+                      </div>
+                      <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md">
+                        {proj.category}
+                      </span>
+                    </div>
+
+                    <div>
+                      <h4 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                        {proj.title}
+                      </h4>
+                      <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                        {proj.description}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-wrap gap-1.5 pt-1">
+                      {proj.tags.map((t) => (
+                        <span
+                          key={t}
+                          className="px-2 py-0.5 rounded bg-white text-slate-700 text-[11px] font-medium border border-slate-200"
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-slate-200/80 flex items-center justify-between">
+                    <a
+                      href={proj.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 group-hover:underline"
+                    >
+                      <GitHubIcon className="w-3.5 h-3.5" />
+                      <span>View Repository</span>
+                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
       </div>
     </section>
