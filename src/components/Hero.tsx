@@ -2,7 +2,7 @@
 
 import React from "react";
 import { portfolioData } from "@/data/portfolio";
-import { ArrowDown, FileText, Sparkles, Terminal, Code2, Award, Cpu, BookOpen } from "lucide-react";
+import { ArrowDown, FileText, Sparkles, Terminal, Code2, Cpu, BookOpen } from "lucide-react";
 
 export default function Hero() {
   const { student } = portfolioData;
@@ -184,16 +184,7 @@ export default function Hero() {
 
               </div>
 
-              {/* Floating accent badge */}
-              <div className="absolute -bottom-4 -left-4 sm:-bottom-5 sm:-left-5 bg-white border border-slate-200 rounded-2xl p-3 shadow-lg flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold">
-                  <Award className="w-5 h-5 text-emerald-600" />
-                </div>
-                <div>
-                  <p className="text-xs font-medium text-slate-500">Academic Standing</p>
-                  <p className="text-sm font-bold text-slate-900">7.9 CGPA • Section 601</p>
-                </div>
-              </div>
+
 
             </div>
           </div>
