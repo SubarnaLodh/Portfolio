@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { portfolioData } from "@/data/portfolio";
-import { Menu, X, FileText, Cpu, ExternalLink } from "lucide-react";
+import { Menu, X, FileText, Cpu, ExternalLink, Palette } from "lucide-react";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -69,8 +69,17 @@ export default function Navbar() {
             ))}
           </nav>
 
-          {/* Action Button: View Resume */}
-          <div className="hidden sm:flex items-center gap-3">
+          {/* Action Buttons */}
+          <div className="hidden sm:flex items-center gap-2.5">
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("open-theme-customizer"))}
+              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-800 border border-slate-200/80 transition-colors cursor-pointer"
+              title="Customize Themes & Fonts"
+              aria-label="Customize Themes & Fonts"
+            >
+              <Palette className="w-3.5 h-3.5 text-blue-600" />
+              <span>Theme</span>
+            </button>
             <a
               href="#coa-tools"
               className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/80 hover:bg-blue-100 transition-colors"
@@ -128,6 +137,16 @@ export default function Navbar() {
             </a>
           ))}
           <div className="pt-3 border-t border-slate-100 flex flex-col gap-2">
+            <button
+              onClick={() => {
+                setMobileMenuOpen(false);
+                window.dispatchEvent(new CustomEvent("open-theme-customizer"));
+              }}
+              className="flex items-center justify-center gap-2 w-full py-2.5 rounded-lg bg-slate-100 text-slate-800 font-medium text-sm hover:bg-slate-200 transition-colors cursor-pointer"
+            >
+              <Palette className="w-4 h-4 text-blue-600" />
+              <span>Theme & Typography Studio</span>
+            </button>
             <a
               href={portfolioData.student.documents.resumePdf}
               target="_blank"

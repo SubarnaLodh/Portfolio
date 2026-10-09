@@ -86,7 +86,7 @@ export default function CursorFollower() {
       <div className="relative flex items-center justify-center">
         {/* 1. Outer Black Ring / Circle — Locked directly around the dot */}
         <div
-          className={`rounded-full border-2 border-black flex items-center justify-center transition-all duration-150 ease-out ${
+          className={`cursor-follower-ring rounded-full border-2 border-black flex items-center justify-center transition-all duration-150 ease-out ${
             isClicking
               ? "w-7 h-7 bg-black/25 scale-90 border-black"
               : isHovering
@@ -102,14 +102,14 @@ export default function CursorFollower() {
         </div>
 
         {/* 2. Concentric Center Black Dot — Fixed permanently at the exact center */}
-        <div className="absolute w-2.5 h-2.5 rounded-full bg-black border border-white/90 shadow-xs flex items-center justify-center">
+        <div className="cursor-follower-dot absolute w-2.5 h-2.5 rounded-full bg-black border border-white/90 shadow-xs flex items-center justify-center">
           <div className="w-0.5 h-0.5 rounded-full bg-white"></div>
         </div>
 
         {/* 3. Concentric Click Ripple Effect */}
         <div
           ref={rippleRef}
-          className="absolute rounded-full border-2 border-black pointer-events-none opacity-0"
+          className="cursor-follower-ring absolute rounded-full border-2 border-black pointer-events-none opacity-0"
           style={{ width: "2rem", height: "2rem" }}
         ></div>
       </div>

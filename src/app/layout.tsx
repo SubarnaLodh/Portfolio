@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import CursorFollower from "@/components/CursorFollower";
+import ThemeAndFontController from "@/components/ThemeAndFontController";
 
 export const viewport: Viewport = {
   width: "device-width",
@@ -33,6 +34,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className="min-h-screen bg-slate-50 text-slate-900 flex flex-col selection:bg-blue-100 selection:text-blue-900">
         <CursorFollower />
+        <ThemeAndFontController />
         {children}
       </body>
     </html>
