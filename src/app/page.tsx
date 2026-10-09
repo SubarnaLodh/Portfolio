@@ -15,7 +15,7 @@ import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen flex flex-col selection:bg-blue-100 selection:text-blue-900">
       {/* Sticky Navigation Bar */}
       <Navbar />
 
