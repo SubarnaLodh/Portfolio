@@ -100,7 +100,7 @@ export default function ThemeAndFontController() {
                 }`}
               >
                 <Palette className="w-4 h-4" />
-                <span>Professional Themes ({THEMES_LIST.length})</span>
+                <span>Professional Themes (4)</span>
               </button>
 
               <button
@@ -112,13 +112,13 @@ export default function ThemeAndFontController() {
                 }`}
               >
                 <Type className="w-4 h-4" />
-                <span>Typography & Fonts ({FONTS_LIST.length})</span>
+                <span>Typography & Fonts</span>
               </button>
             </div>
 
             {/* Scrollable Content Body */}
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
-              {/* TAB 1: THEMES */}
+              {/* TAB 1: EXACTLY 4 THEMES IN 2x2 GRID */}
               {activeTab === "themes" && (
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -128,7 +128,7 @@ export default function ThemeAndFontController() {
                     <span className="text-xs text-slate-400">Instant full-page transformation</span>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     {THEMES_LIST.map((th) => {
                       const isActive = theme === th.id;
 
@@ -136,18 +136,27 @@ export default function ThemeAndFontController() {
                         <div
                           key={th.id}
                           onClick={() => setTheme(th.id)}
-                          className={`relative p-4 rounded-2xl border-2 transition-all cursor-pointer text-left flex flex-col justify-between ${
+                          tabIndex={0}
+                          role="button"
+                          aria-pressed={isActive}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") {
+                              e.preventDefault();
+                              setTheme(th.id);
+                            }
+                          }}
+                          className={`relative p-4 rounded-2xl border-2 transition-all cursor-pointer text-left flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                             isActive
                               ? "border-blue-600 bg-blue-50/40 shadow-md ring-2 ring-blue-500/20"
                               : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/70"
                           }`}
                         >
                           <div>
-                            {/* Header row with Icon, Name & Active check */}
+                            {/* Header row with Theme Name, Badge & Selected Checkmark */}
                             <div className="flex items-center justify-between mb-1.5">
                               <div className="flex items-center gap-2">
                                 <span
-                                  className="w-3.5 h-3.5 rounded-full shadow-xs"
+                                  className="w-3.5 h-3.5 rounded-full shadow-xs border border-slate-300"
                                   style={{ backgroundColor: th.colors.accent }}
                                 />
                                 <span className="text-sm font-bold text-slate-900">
@@ -155,9 +164,14 @@ export default function ThemeAndFontController() {
                                 </span>
                               </div>
 
-                              {isActive && (
-                                <span className="flex items-center justify-center w-5 h-5 rounded-full bg-blue-600 text-white">
+                              {isActive ? (
+                                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-600 text-white text-[10px] font-bold shadow-xs">
                                   <Check className="w-3 h-3 stroke-[3]" />
+                                  <span>Selected</span>
+                                </span>
+                              ) : (
+                                <span className="text-[10px] font-semibold text-slate-400 uppercase">
+                                  {th.badge}
                                 </span>
                               )}
                             </div>
@@ -165,12 +179,86 @@ export default function ThemeAndFontController() {
                             <p className="text-xs text-slate-500 mb-3 leading-relaxed">
                               {th.description}
                             </p>
+
+                            {/* Miniature Theme Preview Mockup */}
+                            <div
+                              className="rounded-xl p-2.5 border mb-3 shadow-2xs"
+                              style={{
+                                backgroundColor: th.colors.bg,
+                                borderColor: th.colors.border,
+                              }}
+                            >
+                              {/* Mini Navbar */}
+                              <div
+                                className="h-2.5 rounded-md flex items-center justify-between px-1.5 mb-2"
+                                style={{
+                                  backgroundColor:
+                                    th.id === "corporate"
+                                      ? th.colors.accent
+                                      : th.colors.card,
+                                  border: `1px solid ${th.colors.border}`,
+                                }}
+                              >
+                                <div className="flex items-center gap-1">
+                                  <div
+                                    className="w-1.5 h-1.5 rounded-full"
+                                    style={{
+                                      backgroundColor:
+                                        th.id === "corporate"
+                                          ? "#FFFFFF"
+                                          : th.colors.accent,
+                                    }}
+                                  />
+                                  <div
+                                    className="h-1 w-6 rounded opacity-80"
+                                    style={{
+                                      backgroundColor:
+                                        th.id === "corporate"
+                                          ? "#FFFFFF"
+                                          : th.colors.text,
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  className="h-1 w-3 rounded"
+                                  style={{ backgroundColor: th.colors.accent }}
+                                />
+                              </div>
+
+                              {/* Mini Hero Card */}
+                              <div
+                                className="p-2 rounded-lg"
+                                style={{
+                                  backgroundColor: th.colors.card,
+                                  border: `1px solid ${th.colors.border}`,
+                                }}
+                              >
+                                <div
+                                  className="h-1.5 w-16 rounded mb-1"
+                                  style={{ backgroundColor: th.colors.text }}
+                                />
+                                <div
+                                  className="h-1 w-24 rounded mb-2 opacity-60"
+                                  style={{ backgroundColor: th.colors.mutedText }}
+                                />
+                                <div className="flex items-center gap-1">
+                                  <div
+                                    className="h-2 w-10 rounded"
+                                    style={{ backgroundColor: th.colors.accent }}
+                                  />
+                                  <div
+                                    className="h-2 w-8 rounded opacity-40"
+                                    style={{ backgroundColor: th.colors.border }}
+                                  />
+                                </div>
+                              </div>
+                            </div>
                           </div>
 
-                          {/* Theme Color Palette Preview Bar */}
-                          <div className="flex items-center gap-2 pt-2 border-t border-slate-100">
+                          {/* 4 Theme Color Palette Swatches */}
+                          <div className="flex items-center justify-between pt-2.5 border-t border-slate-100">
                             <span className="text-[10px] font-mono text-slate-400 uppercase">
-                              Palette:
+                              Palette
                             </span>
                             <div className="flex items-center gap-1.5">
                               <span
@@ -181,7 +269,7 @@ export default function ThemeAndFontController() {
                               <span
                                 className="w-4 h-4 rounded-full border border-slate-300 shadow-xs"
                                 style={{ backgroundColor: th.colors.card }}
-                                title="Card Surface"
+                                title="Surface Card"
                               />
                               <span
                                 className="w-4 h-4 rounded-full shadow-xs"
@@ -194,8 +282,8 @@ export default function ThemeAndFontController() {
                                 title="Text Foreground"
                               />
                             </div>
-                            <span className="ml-auto text-[10px] font-semibold text-slate-500 uppercase px-1.5 py-0.5 rounded bg-slate-100">
-                              {th.badge}
+                            <span className="text-[10px] font-semibold text-slate-500 uppercase px-1.5 py-0.5 rounded bg-slate-100">
+                              {th.category}
                             </span>
                           </div>
                         </div>
@@ -225,7 +313,16 @@ export default function ThemeAndFontController() {
                           <div
                             key={f.id}
                             onClick={() => setFont(f.id)}
-                            className={`p-4 rounded-2xl border-2 transition-all cursor-pointer text-left ${
+                            tabIndex={0}
+                            role="button"
+                            aria-pressed={isActive}
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter" || e.key === " ") {
+                                e.preventDefault();
+                                setFont(f.id);
+                              }
+                            }}
+                            className={`p-4 rounded-2xl border-2 transition-all cursor-pointer text-left focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                               isActive
                                 ? "border-blue-600 bg-blue-50/40 shadow-md ring-2 ring-blue-500/20"
                                 : "border-slate-200 hover:border-slate-300 hover:bg-slate-50/70"
@@ -285,7 +382,7 @@ export default function ThemeAndFontController() {
                         <button
                           key={s.id}
                           onClick={() => setFontSize(s.id)}
-                          className={`px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer ${
+                          className={`px-3 py-2.5 rounded-xl border-2 text-xs font-bold transition-all cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                             fontSize === s.id
                               ? "border-blue-600 bg-blue-50 text-blue-800 shadow-xs"
                               : "border-slate-200 hover:border-slate-300 text-slate-700 bg-white"

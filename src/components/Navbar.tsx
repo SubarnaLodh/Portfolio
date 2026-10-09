@@ -145,7 +145,7 @@ export default function Navbar() {
 
               {/* Instant Dropdown Popover */}
               {dropdownOpen && (
-                <div className="absolute right-0 top-full mt-2 w-80 sm:w-96 rounded-2xl bg-white shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in zoom-in-95 duration-150 theme-dropdown-popover">
+                <div className="absolute right-0 top-full mt-2 w-80 sm:w-[500px] rounded-2xl bg-white shadow-2xl border border-slate-200 p-4 z-50 animate-in fade-in zoom-in-95 duration-150 theme-dropdown-popover">
                   {/* Dropdown Header */}
                   <div className="flex items-center justify-between pb-3 border-b border-slate-100">
                     <div>
@@ -158,7 +158,7 @@ export default function Navbar() {
                         </span>
                       </div>
                       <p className="text-[11px] text-slate-500 mt-0.5">
-                        Changes apply across the entire page
+                        Changes apply across the entire portfolio
                       </p>
                     </div>
 
@@ -184,7 +184,7 @@ export default function Navbar() {
                       }`}
                     >
                       <Palette className="w-3.5 h-3.5" />
-                      <span>Themes ({THEMES_LIST.length})</span>
+                      <span>Professional Themes (4)</span>
                     </button>
 
                     <button
@@ -197,68 +197,135 @@ export default function Navbar() {
                       }`}
                     >
                       <Type className="w-3.5 h-3.5" />
-                      <span>Typography ({FONTS_LIST.length})</span>
+                      <span>Typography & Fonts</span>
                     </button>
                   </div>
 
-                  {/* TAB 1: THEMES GRID */}
+                  {/* TAB 1: EXACTLY 4 THEMES (2x2 Grid Desktop, 1 Col Mobile) */}
                   {activeTab === "themes" && (
-                    <div className="grid grid-cols-2 gap-2 max-h-72 overflow-y-auto pr-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[380px] overflow-y-auto pr-1">
                       {THEMES_LIST.map((th) => {
                         const isSelected = theme === th.id;
                         return (
-                          <button
+                          <div
                             key={th.id}
-                            type="button"
                             onClick={() => setTheme(th.id)}
-                            className={`p-2.5 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between ${
+                            className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex flex-col justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                               isSelected
                                 ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-500"
                                 : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
                             }`}
                           >
-                            <div className="flex items-center justify-between mb-1.5">
-                              <span className="text-xs font-bold text-slate-900 truncate">
-                                {th.name}
-                              </span>
-                              {isSelected && (
-                                <Check className="w-3.5 h-3.5 text-blue-600 shrink-0 stroke-[3]" />
-                              )}
+                            <div>
+                              {/* Header: Name + Selected check badge */}
+                              <div className="flex items-center justify-between mb-1">
+                                <span className="text-xs font-bold text-slate-900">
+                                  {th.name}
+                                </span>
+                                {isSelected ? (
+                                  <span className="inline-flex items-center gap-1 text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded-full">
+                                    <Check className="w-3 h-3 stroke-[3]" />
+                                    <span>Selected</span>
+                                  </span>
+                                ) : (
+                                  <span className="text-[9px] font-semibold text-slate-400 uppercase">
+                                    {th.badge}
+                                  </span>
+                                )}
+                              </div>
+
+                              <p className="text-[11px] text-slate-500 mb-2 leading-tight line-clamp-2">
+                                {th.description}
+                              </p>
+
+                              {/* Miniature Theme Preview Box */}
+                              <div
+                                className="rounded-lg p-2 border mb-2 shadow-2xs"
+                                style={{
+                                  backgroundColor: th.colors.bg,
+                                  borderColor: th.colors.border,
+                                }}
+                              >
+                                <div
+                                  className="h-2 rounded flex items-center px-1 mb-1.5"
+                                  style={{
+                                    backgroundColor:
+                                      th.id === "corporate"
+                                        ? th.colors.accent
+                                        : th.colors.card,
+                                    border: `1px solid ${th.colors.border}`,
+                                  }}
+                                >
+                                  <div
+                                    className="w-1.5 h-1.5 rounded-full"
+                                    style={{
+                                      backgroundColor:
+                                        th.id === "corporate"
+                                          ? "#FFFFFF"
+                                          : th.colors.accent,
+                                    }}
+                                  />
+                                </div>
+                                <div
+                                  className="p-1.5 rounded"
+                                  style={{
+                                    backgroundColor: th.colors.card,
+                                    border: `1px solid ${th.colors.border}`,
+                                  }}
+                                >
+                                  <div
+                                    className="h-1.5 w-12 rounded mb-1"
+                                    style={{ backgroundColor: th.colors.text }}
+                                  />
+                                  <div
+                                    className="h-1 w-20 rounded mb-1.5 opacity-60"
+                                    style={{ backgroundColor: th.colors.mutedText }}
+                                  />
+                                  <div
+                                    className="h-2 w-10 rounded"
+                                    style={{ backgroundColor: th.colors.accent }}
+                                  />
+                                </div>
+                              </div>
                             </div>
 
-                            <div className="flex items-center justify-between mt-1">
-                              {/* Swatches */}
-                              <div className="flex items-center gap-1">
+                            {/* 4 Palette Swatches */}
+                            <div className="flex items-center justify-between pt-1 border-t border-slate-100">
+                              <span className="text-[9px] font-mono text-slate-400 uppercase">
+                                Palette
+                              </span>
+                              <div className="flex items-center gap-1.5">
                                 <span
-                                  className="w-3 h-3 rounded-full border border-slate-300 shadow-2xs"
+                                  className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-2xs"
                                   style={{ backgroundColor: th.colors.bg }}
                                   title="Background"
                                 />
                                 <span
-                                  className="w-3 h-3 rounded-full border border-slate-300 shadow-2xs"
+                                  className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-2xs"
                                   style={{ backgroundColor: th.colors.card }}
-                                  title="Card"
+                                  title="Surface"
                                 />
                                 <span
-                                  className="w-3 h-3 rounded-full shadow-2xs"
+                                  className="w-3.5 h-3.5 rounded-full shadow-2xs"
                                   style={{ backgroundColor: th.colors.accent }}
-                                  title="Accent"
+                                  title="Primary Accent"
+                                />
+                                <span
+                                  className="w-3.5 h-3.5 rounded-full border border-slate-300 shadow-2xs"
+                                  style={{ backgroundColor: th.colors.text }}
+                                  title="Text"
                                 />
                               </div>
-
-                              <span className="text-[9px] font-semibold text-slate-400 uppercase">
-                                {th.badge}
-                              </span>
                             </div>
-                          </button>
+                          </div>
                         );
                       })}
                     </div>
                   )}
 
-                  {/* TAB 2: FONTS LIST */}
+                  {/* TAB 2: TYPOGRAPHY & FONTS */}
                   {activeTab === "fonts" && (
-                    <div className="space-y-3 max-h-72 overflow-y-auto pr-1">
+                    <div className="space-y-3 max-h-[380px] overflow-y-auto pr-1">
                       <div className="space-y-1.5">
                         {FONTS_LIST.map((f) => {
                           const isSelected = font === f.id;
@@ -267,7 +334,7 @@ export default function Navbar() {
                               key={f.id}
                               type="button"
                               onClick={() => setFont(f.id)}
-                              className={`w-full p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between ${
+                              className={`w-full p-2.5 rounded-xl border text-left transition-all cursor-pointer flex items-center justify-between focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                                 isSelected
                                   ? "border-blue-600 bg-blue-50/50 shadow-xs ring-1 ring-blue-500"
                                   : "border-slate-200 hover:border-slate-300 hover:bg-slate-50"
@@ -402,27 +469,35 @@ export default function Navbar() {
             </a>
           ))}
 
-          {/* Mobile Theme Selector */}
+          {/* Mobile Theme Selector: Exactly 4 Themes */}
           <div className="pt-3 border-t border-slate-100 space-y-2">
             <div className="px-3 text-xs font-bold text-slate-500 uppercase tracking-wider">
-              Quick Theme Selection
+              Professional Themes (4)
             </div>
-            <div className="grid grid-cols-2 gap-2 px-3">
+            <div className="grid grid-cols-1 gap-2 px-3">
               {THEMES_LIST.map((th) => (
                 <button
                   key={th.id}
                   onClick={() => setTheme(th.id)}
-                  className={`p-2 rounded-xl border text-xs font-bold flex items-center justify-between ${
+                  className={`p-2.5 rounded-xl border text-xs font-bold flex items-center justify-between ${
                     theme === th.id
-                      ? "border-blue-600 bg-blue-50 text-blue-800"
+                      ? "border-blue-600 bg-blue-50 text-blue-800 ring-1 ring-blue-500"
                       : "border-slate-200 text-slate-700 bg-white"
                   }`}
                 >
-                  <span className="truncate">{th.name}</span>
-                  <span
-                    className="w-2.5 h-2.5 rounded-full shrink-0"
-                    style={{ backgroundColor: th.colors.accent }}
-                  />
+                  <div className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full border border-slate-300"
+                      style={{ backgroundColor: th.colors.accent }}
+                    />
+                    <span>{th.name}</span>
+                  </div>
+                  {theme === th.id && (
+                    <span className="inline-flex items-center gap-1 text-[10px] text-blue-700 font-bold bg-blue-100 px-1.5 py-0.5 rounded-full">
+                      <Check className="w-3 h-3 stroke-[3]" />
+                      <span>Selected</span>
+                    </span>
+                  )}
                 </button>
               ))}
             </div>

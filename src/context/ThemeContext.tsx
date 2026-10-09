@@ -2,15 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from "react";
 
-export type ThemeId =
-  | "light"
-  | "midnight"
-  | "navy"
-  | "forest"
-  | "cyber"
-  | "oxford"
-  | "titanium"
-  | "sunset";
+export type ThemeId = "executive" | "midnight" | "corporate" | "oxford";
 
 export type FontId = "inter" | "mono" | "serif" | "geometric" | "system";
 export type FontSizeId = "compact" | "normal" | "large";
@@ -18,14 +10,18 @@ export type FontSizeId = "compact" | "normal" | "large";
 export interface ThemeMeta {
   id: ThemeId;
   name: string;
-  category: "Light" | "Dark" | "Warm";
+  category: "Light" | "Dark" | "Corporate" | "Academic";
   badge: string;
   description: string;
   colors: {
     bg: string;
     card: string;
+    elevated: string;
     accent: string;
+    secondaryAccent: string;
     text: string;
+    mutedText: string;
+    border: string;
   };
 }
 
@@ -40,107 +36,71 @@ export interface FontMeta {
 
 export const THEMES_LIST: ThemeMeta[] = [
   {
-    id: "light",
+    id: "executive",
     name: "Executive Light",
     category: "Light",
     badge: "Default Academic",
-    description: "Crisp white, refined slate borders, royal blue accents.",
+    description: "Academic portfolio, university evaluation, and professional readability.",
     colors: {
-      bg: "#f8fafc",
-      card: "#ffffff",
-      accent: "#2563eb",
-      text: "#0f172a",
+      bg: "#F8FAFC",
+      card: "#FFFFFF",
+      elevated: "#F1F5F9",
+      accent: "#2563EB",
+      secondaryAccent: "#DBEAFE",
+      text: "#172033",
+      mutedText: "#526078",
+      border: "#DCE3ED",
     },
   },
   {
     id: "midnight",
-    name: "Midnight Pro (OLED)",
+    name: "Midnight Pro",
     category: "Dark",
-    badge: "Pure Black",
-    description: "Deep obsidian dark mode with glowing ice-blue highlights.",
+    badge: "Tech / AI",
+    description: "Modern technology, AI, and software-development portfolio with distinct dark surfaces.",
     colors: {
-      bg: "#05070a",
-      card: "#0f131a",
-      accent: "#38bdf8",
-      text: "#f9fafb",
+      bg: "#0B1120",
+      card: "#111827",
+      elevated: "#182235",
+      accent: "#60A5FA",
+      secondaryAccent: "#22D3EE",
+      text: "#F1F5F9",
+      mutedText: "#B6C2D2",
+      border: "#29364A",
     },
   },
   {
-    id: "navy",
-    name: "Corporate Navy",
-    category: "Dark",
-    badge: "Enterprise Tech",
-    description: "Deep maritime navy with crisp cyan and steel accents.",
+    id: "corporate",
+    name: "Corporate Blue",
+    category: "Corporate",
+    badge: "Enterprise",
+    description: "Professional enterprise portfolio with deep blue navbar, crisp cards, and cyan accents.",
     colors: {
-      bg: "#060d1a",
-      card: "#0b172d",
-      accent: "#0ea5e9",
-      text: "#f0f6fc",
-    },
-  },
-  {
-    id: "forest",
-    name: "Nordic Forest",
-    category: "Dark",
-    badge: "Minimal Jade",
-    description: "Deep jade and forest tones with mint accents. High contrast.",
-    colors: {
-      bg: "#040e09",
-      card: "#0a1c13",
-      accent: "#10b981",
-      text: "#ecfdf5",
-    },
-  },
-  {
-    id: "cyber",
-    name: "Cyberpunk Matrix",
-    category: "Dark",
-    badge: "AI / Neon",
-    description: "Futuristic deep violet with bright neon purple and cyan glow.",
-    colors: {
-      bg: "#070614",
-      card: "#110e28",
-      accent: "#a855f7",
-      text: "#faf5ff",
+      bg: "#F1F5F9",
+      card: "#FFFFFF",
+      elevated: "#E2E8F0",
+      accent: "#0F4C81",
+      secondaryAccent: "#06A6D6",
+      text: "#172B4D",
+      mutedText: "#526579",
+      border: "#D5E0EB",
     },
   },
   {
     id: "oxford",
     name: "Oxford Academic",
-    category: "Warm",
-    badge: "Editorial Paper",
-    description: "Classic scholar parchment cream with deep charcoal typography.",
+    category: "Academic",
+    badge: "Warm Scholar",
+    description: "Warm academic appearance with elegant serif headings and muted burgundy accents.",
     colors: {
-      bg: "#f9f6ee",
-      card: "#ffffff",
-      accent: "#b91c1c",
-      text: "#1c1917",
-    },
-  },
-  {
-    id: "titanium",
-    name: "Titanium Slate",
-    category: "Dark",
-    badge: "Monochrome Minimal",
-    description: "Pure charcoal and silver monochrome. High-end developer aesthetic.",
-    colors: {
-      bg: "#121214",
-      card: "#1a1a1e",
-      accent: "#ffffff",
-      text: "#f4f4f5",
-    },
-  },
-  {
-    id: "sunset",
-    name: "Solar Sunset",
-    category: "Dark",
-    badge: "Warm Espresso",
-    description: "Deep roasted espresso background with warm terracotta and amber glow.",
-    colors: {
-      bg: "#140e0d",
-      card: "#201614",
-      accent: "#f97316",
-      text: "#fff7ed",
+      bg: "#F7F3EA",
+      card: "#FFFDF8",
+      elevated: "#EFE8DA",
+      accent: "#8C2633",
+      secondaryAccent: "#E9D5D7",
+      text: "#292722",
+      mutedText: "#625E55",
+      border: "#DAD1C3",
     },
   },
 ];
@@ -203,21 +163,42 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | null>(null);
 
+function normalizeTheme(val: string | null): ThemeId {
+  if (!val) return "executive";
+  if (val === "executive" || val === "midnight" || val === "corporate" || val === "oxford") {
+    return val as ThemeId;
+  }
+  // Backwards compatibility migration
+  if (val === "light") return "executive";
+  if (val === "dark" || val === "cyber" || val === "forest" || val === "titanium" || val === "sunset") {
+    return "midnight";
+  }
+  if (val === "navy" || val === "ocean") return "corporate";
+  if (val === "sepia") return "oxford";
+  return "executive";
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<ThemeId>("light");
+  const [theme, setThemeState] = useState<ThemeId>("executive");
   const [font, setFontState] = useState<FontId>("inter");
   const [fontSize, setFontSizeState] = useState<FontSizeId>("normal");
   const [isNavbarDropdownOpen, setIsNavbarDropdownOpen] = useState(false);
 
   // Sync on initial mount
   useEffect(() => {
-    const savedTheme = (localStorage.getItem("subarna_theme") as ThemeId) || "light";
+    const rawTheme = localStorage.getItem("subarna_theme");
+    const savedTheme = normalizeTheme(rawTheme);
     const savedFont = (localStorage.getItem("subarna_font") as FontId) || "inter";
     const savedSize = (localStorage.getItem("subarna_font_size") as FontSizeId) || "normal";
 
     document.documentElement.setAttribute("data-theme", savedTheme);
     document.documentElement.setAttribute("data-font", savedFont);
     document.documentElement.setAttribute("data-font-size", savedSize);
+
+    // Save normalized theme back if it was mapped
+    if (rawTheme !== savedTheme) {
+      localStorage.setItem("subarna_theme", savedTheme);
+    }
 
     queueMicrotask(() => {
       setThemeState(savedTheme);
@@ -249,7 +230,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   };
 
   const resetDefaults = () => {
-    setTheme("light");
+    setTheme("executive");
     setFont("inter");
     setFontSize("normal");
   };
