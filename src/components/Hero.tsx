@@ -1,8 +1,9 @@
 "use client";
 
 import React from "react";
+import Image from "next/image";
 import { portfolioData } from "@/data/portfolio";
-import { ArrowDown, FileText, Sparkles, Terminal, Code2, Cpu, BookOpen } from "lucide-react";
+import { ArrowDown, FileText, Sparkles, Code2, Cpu, BookOpen } from "lucide-react";
 
 export default function Hero() {
   const { student } = portfolioData;
@@ -110,7 +111,7 @@ export default function Hero() {
 
           </div>
 
-          {/* Right Column: Profile Photo Card with [PROFILE_PHOTO] Placeholder */}
+          {/* Right Column: Profile Photo Card */}
           <div className="lg:col-span-5 flex justify-center">
             <div className="relative w-full max-w-sm sm:max-w-md">
               
@@ -126,48 +127,52 @@ export default function Hero() {
                     <span className="text-xs font-mono text-slate-400 ml-1">portfolio.sys</span>
                   </div>
                   <span className="text-xs font-mono font-medium text-blue-600 bg-blue-50 px-2 py-0.5 rounded">
-                    UID: 25BAI10051
+                    UID: {student.uid}
                   </span>
                 </div>
 
-                {/* Profile Photo Container */}
-                <div className="relative aspect-4/5 rounded-2xl bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 border-2 border-slate-800/20 overflow-hidden flex flex-col items-center justify-center text-center p-6 shadow-inner">
+                {/* Profile Portrait Container */}
+                <div className="relative rounded-2xl bg-gradient-to-b from-slate-50 via-blue-50/20 to-slate-50 border border-slate-200/70 p-6 sm:p-7 flex flex-col items-center justify-center text-center">
                   
-                  {/* Subtle circuit line pattern inside photo placeholder */}
-                  <div className="absolute inset-0 tech-grid-pattern opacity-15 pointer-events-none"></div>
-                  
-                  {/* Avatar graphic / Monogram centerpiece */}
-                  <div className="relative z-10 w-24 h-24 sm:w-28 sm:h-28 rounded-2xl bg-gradient-to-tr from-blue-600 to-cyan-400 p-0.5 shadow-lg mb-4">
-                    <div className="w-full h-full rounded-2xl bg-slate-950 flex flex-col items-center justify-center text-white">
-                      <span className="text-3xl sm:text-4xl font-black tracking-wider text-cyan-300">
-                        SL
-                      </span>
-                      <span className="text-[10px] font-mono tracking-widest text-slate-400 uppercase mt-0.5">
-                        CSE (AI)
-                      </span>
+                  {/* Circular Portrait with subtle border, soft glow ring, and responsive sizing */}
+                  <div className="relative group">
+                    {/* Subtle ambient gradient ring / glow */}
+                    <div className="absolute -inset-1 rounded-full bg-gradient-to-tr from-blue-600 via-indigo-500 to-cyan-400 opacity-25 blur-sm group-hover:opacity-40 transition-opacity duration-300"></div>
+                    
+                    {/* Circular image frame */}
+                    <div className="relative w-44 h-44 sm:w-52 sm:h-52 rounded-full p-1 bg-white ring-2 ring-slate-200/80 shadow-md overflow-hidden">
+                      <Image
+                        src="/profile.jpg"
+                        alt={`${student.name} - Profile Photo`}
+                        width={400}
+                        height={400}
+                        priority
+                        className="w-full h-full rounded-full object-cover object-top transition duration-300 group-hover:scale-105"
+                      />
                     </div>
+
+                    {/* Active student indicator dot */}
+                    <span
+                      className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 flex h-4 w-4 sm:h-5 sm:w-5 items-center justify-center rounded-full bg-white shadow-md ring-2 ring-white"
+                      title="Active Student"
+                    >
+                      <span className="h-2.5 w-2.5 sm:h-3 sm:w-3 rounded-full bg-emerald-500"></span>
+                    </span>
                   </div>
 
-                  {/* Placeholder text as explicitly instructed */}
-                  <div className="relative z-10 space-y-1.5">
-                    <div className="inline-block px-3 py-1 rounded-md bg-blue-500/20 border border-blue-400/40 text-cyan-300 font-mono text-xs font-semibold tracking-wider">
-                      [PROFILE_PHOTO]
-                    </div>
-                    <p className="text-sm font-medium text-slate-200">
-                      Subarna Lodh
+                  {/* Student Name & Sub-details */}
+                  <div className="mt-5 space-y-1">
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                      {student.name}
+                    </h3>
+                    <p className="text-xs sm:text-sm font-semibold text-blue-700">
+                      {student.branch}
                     </p>
-                    <p className="text-xs text-slate-400 max-w-[220px]">
-                      Chandigarh University • 2025–2029
+                    <p className="text-xs text-slate-500">
+                      {student.university} • 2025–2029
                     </p>
                   </div>
 
-                  {/* Instruction tag for replacing photo */}
-                  <div className="relative z-10 mt-5 pt-3 border-t border-slate-800/80 w-full">
-                    <p className="text-[11px] text-slate-400 flex items-center justify-center gap-1.5">
-                      <Terminal className="w-3 h-3 text-cyan-400" />
-                      <span>Ready to link custom profile photo</span>
-                    </p>
-                  </div>
                 </div>
 
                 {/* Card footer metrics */}

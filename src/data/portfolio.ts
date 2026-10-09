@@ -45,6 +45,7 @@ export interface PortfolioData {
   student: {
     name: string;
     monogram: string;
+    photoUrl?: string;
     uid: string;
     branch: string;
     specialization: string;
@@ -88,6 +89,7 @@ export const portfolioData: PortfolioData = {
   student: {
     name: "Subarna Lodh",
     monogram: "SL",
+    photoUrl: "/profile.jpg",
     uid: "25BAI10051",
     branch: "B.E. CSE (AI)",
     specialization: "AI (in collaboration with Microsoft)",
