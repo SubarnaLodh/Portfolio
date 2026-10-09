@@ -21,8 +21,7 @@ An academic portfolio website and interactive Computer Organization & Architectu
    - Mathematical step-by-step calculation derivations (positional expansion, successive division traces, 3-bit and 4-bit grouping).
    - Multi-base equivalence summary ($101101_2 = 45_{10} = 55_8 = 2D_{16}$).
    - Hardware register bit-cell visualizer (bits and nibbles).
-   - Copy Result, Swap Bases, Clear, and instant validation handling.
-   - Modular roadmap cards for 7 upcoming COA simulator modules (Binary ALU, Complements, Cache Mapping, Physical Addressing, Paging, Page Replacement, CPU Scheduling).
+   - **Binary Arithmetic & ALU Simulator**: Supports 8-bit & 16-bit operations (ADD, SUB with 2's complement, bitwise logic, shifts), CPU status flags (Zero, Sign, Carry, Overflow), and 1's/2's complement generation.
 
 3. **Featured Project (COA)**:
    - Dedicated showcase for **Instruction Set Simulator** with direct links to [GitHub Repository](https://github.com/SubarnaLodh/25BAI10051-Instruction-Set-Simulator-COA.git) and README.

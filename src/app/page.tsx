@@ -34,7 +34,7 @@ export default function Home() {
           <ResumeCard />
         </div>
 
-        {/* 3. COA Tools Section (Highlight: Number System Converter + Roadmap) */}
+        {/* 3. COA Tools Section (Number System Converter & Binary ALU) */}
         <COATools />
 
         {/* 4. GitHub Featured Project */}
