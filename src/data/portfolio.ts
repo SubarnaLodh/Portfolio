@@ -33,12 +33,16 @@ export interface EducationItem {
 
 export interface AchievementItem {
   title: string;
-  category: "Achievement" | "Certification" | "Ideathon";
+  category: string;
   subtitle: string;
   period: string;
   description: string;
-  placeholderText: string;
+  placeholderText?: string;
   highlights: string[];
+  imageUrl?: string;
+  organizer?: string;
+  date?: string;
+  team?: string;
 }
 
 export interface PortfolioData {
@@ -138,8 +142,8 @@ export const portfolioData: PortfolioData = {
     contact: {
       email: "subarna.gungun2006@gmail.com",
       githubUrl: "https://github.com/SubarnaLodh",
-      linkedinUrl: "[LINKEDIN_URL]",
-      leetcodeUrl: "[LEETCODE_URL]",
+      linkedinUrl: "https://www.linkedin.com/in/subarna-lodh-3b39b6383/",
+      leetcodeUrl: "https://leetcode.com/u/Subarna_Lodh/",
     },
     documents: {
       resumePdf: "/docs/Subarna_Lodh_Resume.pdf",
@@ -223,45 +227,84 @@ export const portfolioData: PortfolioData = {
 
   achievements: [
     {
-      title: "Integrated Green Mobility Ideathon 2026",
-      category: "Ideathon",
-      subtitle: "Academic Innovation Challenge",
-      period: "2026",
+      title: "Integrated Green Mobility Ideathon — Sustainable Vehicles",
+      category: "Ideathon Participation",
+      subtitle: "Chandigarh University & Ignite Youth Club (IKS)",
+      period: "16 February 2026",
       description:
-        "Participated in the Integrated Green Mobility Ideathon 2026, collaborating on innovative technology-enabled frameworks for sustainable and clean urban transportation.",
-      placeholderText: "[ACHIEVEMENT IMAGE 1]",
+        "Participation in an ideathon focused on sustainable vehicles inspired by Indian Knowledge Systems, developing technology-enabled concepts for clean urban transit.",
+      imageUrl: "/achievements/IKS.jpeg",
+      organizer: "Chandigarh University and Ignite Youth Club, in collaboration with Indian Knowledge Systems",
+      date: "16 February 2026",
       highlights: [
         "Collaborative problem solving and ideation",
-        "Sustainable mobility frameworks",
+        "Sustainable vehicles inspired by Indian Knowledge Systems",
         "Interdisciplinary team presentation",
       ],
     },
     {
-      title: "Microsoft Azure Fundamentals AZ-900",
-      category: "Certification",
+      title: "Microsoft Certified — Azure Fundamentals",
+      category: "Professional Certification",
       subtitle: "Microsoft Certified Credential",
-      period: "Certified",
+      period: "20 November 2025",
       description:
-        "Demonstrated foundational knowledge of cloud services, core architectural components of Microsoft Azure, cloud security, privacy, compliance, and cloud governance.",
-      placeholderText: "[ACHIEVEMENT IMAGE 2]",
+        "Microsoft Azure Fundamentals certification demonstrating foundational knowledge of cloud computing, core Azure architecture, security, and cloud governance.",
+      imageUrl: "/achievements/AZ900.jpeg",
+      organizer: "Microsoft",
+      date: "20 November 2025",
       highlights: [
-        "Core Azure architectural services",
-        "Cloud security & network defense",
-        "Identity, governance, and compliance",
+        "Core Azure architectural services and computing models",
+        "Cloud security, defense-in-depth, and privacy standards",
+        "Identity, governance, compliance, and cost management",
       ],
     },
     {
-      title: "COA Academic Excellence & Portfolio",
-      category: "Achievement",
-      subtitle: "Chandigarh University Department of CSE",
-      period: "2025–2026",
+      title: "HERizon 2026 — Discipline Coordinator",
+      category: "Certificate of Appreciation",
+      subtitle: "Chandigarh University & IEEE India Council",
+      period: "27–28 March 2026",
       description:
-        "Built academic coursework implementations including the Instruction Set Simulator, comprehensive COA lecture evaluations, and interactive computer architecture tooling.",
-      placeholderText: "[ACHIEVEMENT IMAGE 3]",
+        "Recognition for contributions as a Discipline Coordinator (She Points) during HERizon 2026, supporting event operations and participant coordination.",
+      imageUrl: "/achievements/IEEE.jpeg",
+      organizer: "Chandigarh University and IEEE India Council",
+      date: "27–28 March 2026",
       highlights: [
-        "COA Assignment I & lecture question analysis",
-        "Instruction Set simulation tooling",
-        "Interactive number system converter implementation",
+        "Discipline Coordinator (She Points) leadership",
+        "Joint initiative by Chandigarh University & IEEE India Council",
+        "Event operations, crowd management, & coordination",
+      ],
+    },
+    {
+      title: "Build Summit 2026 — Byte Built 1.0",
+      category: "Participation",
+      subtitle: "Chandigarh University",
+      period: "14–15 September 2026",
+      description:
+        "Participation in Build Summit 2026, celebrating engineering, creativity, innovation, and technology through hands-on technical tracks.",
+      imageUrl: "/achievements/BYTEXL.jpeg",
+      organizer: "Chandigarh University",
+      date: "14–15 September 2026",
+      highlights: [
+        "Hands-on engineering, creativity, and technical innovation",
+        "Celebration of technology and collaborative software design",
+        "Active participation in campus technical build track",
+      ],
+    },
+    {
+      title: "Build With Bharat 2.0 — National-Level Hackathon",
+      category: "Hackathon Participation",
+      subtitle: "Build With Bharat 2.0 (NIT Delhi)",
+      period: "13–14 September 2026",
+      description:
+        "Participation in the PPT Submission Round of the Build With Bharat 2.0 national-level hackathon as part of Team Cipher Core.",
+      imageUrl: "/achievements/Built%20with%20bharat.png",
+      organizer: "Build With Bharat 2.0, held at NIT Delhi",
+      date: "13–14 September 2026",
+      team: "Cipher Core",
+      highlights: [
+        "National-level hackathon held at NIT Delhi",
+        "PPT Submission Round participant",
+        "Team: Cipher Core",
       ],
     },
   ],

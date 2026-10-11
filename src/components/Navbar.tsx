@@ -1,6 +1,8 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { portfolioData } from "@/data/portfolio";
 import {
   Menu,
@@ -18,6 +20,7 @@ import {
 import { useTheme, THEMES_LIST, FONTS_LIST } from "@/context/ThemeContext";
 
 export default function Navbar() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -64,14 +67,9 @@ export default function Navbar() {
   }, [dropdownOpen]);
 
   const navLinks = [
-    { label: "Home", href: "#hero" },
-    { label: "About Me", href: "#about" },
-    { label: "Education", href: "#education" },
-    { label: "COA Tools", href: "#coa-tools" },
-    { label: "Projects", href: "#project" },
-    { label: "Achievements", href: "#achievements" },
-    { label: "Assignments", href: "#assignments" },
-    { label: "Contact", href: "#contact" },
+    { label: "Home & About", href: "/" },
+    { label: "COA Tools", href: "/coa-tools" },
+    { label: "Projects & Academics", href: "/projects-academics" },
   ];
 
   const currentThemeObj = THEMES_LIST.find((t) => t.id === theme) || THEMES_LIST[0];
@@ -87,8 +85,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo / Monogram */}
-          <a
-            href="#hero"
+          <Link
+            href="/"
             className="flex items-center gap-3 group focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-lg p-1"
           >
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-900 to-indigo-950 text-white flex items-center justify-center font-bold tracking-tight shadow-sm group-hover:scale-105 transition-transform">
@@ -103,19 +101,27 @@ export default function Navbar() {
                 Chandigarh University • B.E. CSE (AI)
               </span>
             </div>
-          </a>
+          </Link>
 
           {/* Desktop Nav Links */}
-          <nav className="hidden lg:flex items-center space-x-1" aria-label="Main Navigation">
-            {navLinks.map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                className="px-3.5 py-2 text-sm font-medium text-slate-700 hover:text-blue-700 hover:bg-slate-50 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-400"
-              >
-                {link.label}
-              </a>
-            ))}
+          <nav className="hidden lg:flex items-center space-x-1.5" aria-label="Main Navigation">
+            {navLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.label}
+                  href={link.href}
+                  className={`px-3.5 py-2 text-sm font-semibold rounded-lg transition-all focus:outline-none focus:ring-2 focus:ring-blue-400 ${
+                    isActive
+                      ? "bg-blue-50 text-blue-700 font-bold shadow-2xs nav-link-active"
+                      : "text-slate-700 hover:text-blue-700 hover:bg-slate-100/70"
+                  }`}
+                  aria-current={isActive ? "page" : undefined}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {/* Action Buttons */}
@@ -413,13 +419,6 @@ export default function Navbar() {
             </div>
 
             <a
-              href="#coa-tools"
-              className="inline-flex items-center gap-1.5 text-xs font-semibold px-3 py-1.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200/80 hover:bg-blue-100 transition-colors"
-            >
-              <Cpu className="w-3.5 h-3.5 text-blue-600" />
-              <span>COA Tools</span>
-            </a>
-            <a
               href={portfolioData.student.documents.resumePdf}
               target="_blank"
               rel="noopener noreferrer"
@@ -458,16 +457,24 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="lg:hidden bg-white border-b border-slate-200 shadow-xl px-4 pt-3 pb-6 space-y-2 animate-fadeIn">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMobileMenuOpen(false)}
-              className="block px-3 py-2.5 rounded-lg text-base font-medium text-slate-800 hover:bg-blue-50 hover:text-blue-700 transition-colors"
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = pathname === link.href;
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileMenuOpen(false)}
+                className={`block px-3.5 py-2.5 rounded-xl text-base font-semibold transition-colors ${
+                  isActive
+                    ? "bg-blue-50 text-blue-700 font-bold border border-blue-200/60 active-nav-mobile"
+                    : "text-slate-800 hover:bg-blue-50/60 hover:text-blue-700"
+                }`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
 
           {/* Mobile Theme Selector: Exactly 4 Themes */}
           <div className="pt-3 border-t border-slate-100 space-y-2">

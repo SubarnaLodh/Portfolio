@@ -12,8 +12,9 @@ import {
   User,
   Shield,
   MessageSquare,
+  ExternalLink,
 } from "lucide-react";
-import { GitHubIcon, LinkedInIcon } from "@/components/Icons";
+import { GitHubIcon, LinkedInIcon, LeetCodeIcon } from "@/components/Icons";
 
 export default function Contact() {
   const { student } = portfolioData;
@@ -159,27 +160,35 @@ export default function Contact() {
                     <span>Send Email</span>
                   </a>
 
-                  {/* LinkedIn Placeholder */}
-                  <div className="flex items-center justify-between p-3 bg-slate-100 border border-slate-200 rounded-xl text-xs">
-                    <div className="flex items-center gap-2 text-slate-700 font-semibold">
-                      <LinkedInIcon className="w-4 h-4 text-blue-600" />
+                  {/* LinkedIn */}
+                  <a
+                    href={student.contact.linkedinUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 bg-white hover:bg-blue-50/60 border border-slate-200 hover:border-blue-300 rounded-xl text-xs font-semibold text-slate-800 hover:text-blue-700 shadow-2xs hover:shadow-xs transition-all group focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    aria-label="Subarna Lodh on LinkedIn"
+                  >
+                    <div className="flex items-center gap-2">
+                      <LinkedInIcon className="w-4 h-4 text-[#0A66C2] group-hover:scale-110 transition-transform shrink-0" />
                       <span>LinkedIn</span>
                     </div>
-                    <span className="text-[10px] font-mono font-medium text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">
-                      {student.contact.linkedinUrl}
-                    </span>
-                  </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-blue-600 transition-colors shrink-0" />
+                  </a>
 
-                  {/* LeetCode Placeholder */}
-                  <div className="flex items-center justify-between p-3 bg-slate-100 border border-slate-200 rounded-xl text-xs">
-                    <div className="flex items-center gap-2 text-slate-700 font-semibold">
-                      <Code2 className="w-4 h-4 text-amber-600" />
+                  {/* LeetCode */}
+                  <a
+                    href={student.contact.leetcodeUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between p-3 bg-white hover:bg-amber-50/60 border border-slate-200 hover:border-amber-300 rounded-xl text-xs font-semibold text-slate-800 hover:text-amber-700 shadow-2xs hover:shadow-xs transition-all group focus:outline-none focus:ring-2 focus:ring-amber-500"
+                    aria-label="Subarna Lodh on LeetCode"
+                  >
+                    <div className="flex items-center gap-2">
+                      <LeetCodeIcon className="w-4 h-4 text-[#FFA116] group-hover:scale-110 transition-transform shrink-0" />
                       <span>LeetCode</span>
                     </div>
-                    <span className="text-[10px] font-mono font-medium text-slate-500 bg-white px-1.5 py-0.5 rounded border border-slate-200">
-                      {student.contact.leetcodeUrl}
-                    </span>
-                  </div>
+                    <ExternalLink className="w-3.5 h-3.5 text-slate-400 group-hover:text-amber-600 transition-colors shrink-0" />
+                  </a>
                 </div>
               </div>
             </div>

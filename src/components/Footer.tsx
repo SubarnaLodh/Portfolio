@@ -1,9 +1,10 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { portfolioData } from "@/data/portfolio";
 import { Mail, ArrowUp } from "lucide-react";
-import { GitHubIcon } from "@/components/Icons";
+import { GitHubIcon, LinkedInIcon, LeetCodeIcon } from "@/components/Icons";
 
 export default function Footer() {
   const { student } = portfolioData;
@@ -47,48 +48,38 @@ export default function Footer() {
           {/* Quick Links */}
           <div className="md:col-span-4 space-y-3">
             <h4 className="text-xs font-bold uppercase tracking-wider text-white">
-              Quick Links
+              Primary Pages & Sections
             </h4>
-            <ul className="grid grid-cols-2 gap-2 text-xs sm:text-sm">
+            <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs sm:text-sm">
               <li>
-                <a href="#hero" className="hover:text-cyan-400 transition-colors">
-                  Home
-                </a>
+                <Link href="/" className="hover:text-cyan-400 transition-colors">
+                  Home & About
+                </Link>
               </li>
               <li>
-                <a href="#about" className="hover:text-cyan-400 transition-colors">
-                  About Me
-                </a>
-              </li>
-              <li>
-                <a href="#education" className="hover:text-cyan-400 transition-colors">
-                  Education
-                </a>
-              </li>
-              <li>
-                <a href="#coa-tools" className="hover:text-cyan-400 transition-colors">
+                <Link href="/coa-tools" className="hover:text-cyan-400 transition-colors">
                   COA Tools
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#project" className="hover:text-cyan-400 transition-colors">
-                  Projects
-                </a>
+                <Link href="/projects-academics" className="hover:text-cyan-400 transition-colors">
+                  Projects & Academics
+                </Link>
               </li>
               <li>
-                <a href="#achievements" className="hover:text-cyan-400 transition-colors">
-                  Achievements
-                </a>
+                <Link href="/#about" className="hover:text-cyan-400 transition-colors">
+                  About & Skills
+                </Link>
               </li>
               <li>
-                <a href="#assignments" className="hover:text-cyan-400 transition-colors">
-                  Assignments
-                </a>
+                <Link href="/#education" className="hover:text-cyan-400 transition-colors">
+                  Education Timeline
+                </Link>
               </li>
               <li>
-                <a href="#contact" className="hover:text-cyan-400 transition-colors">
-                  Contact
-                </a>
+                <Link href="/#contact" className="hover:text-cyan-400 transition-colors">
+                  Contact Me
+                </Link>
               </li>
             </ul>
           </div>
@@ -109,19 +100,27 @@ export default function Footer() {
                 <span>GitHub ({student.contact.githubUrl.replace("https://github.com/", "@")})</span>
               </a>
 
-              <div className="flex items-center gap-2 text-slate-400">
-                <span>LinkedIn:</span>
-                <span className="font-mono text-[11px] bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-slate-400">
-                  {student.contact.linkedinUrl}
-                </span>
-              </div>
+              <a
+                href={student.contact.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+                aria-label="LinkedIn profile"
+              >
+                <LinkedInIcon className="w-4 h-4 text-[#0A66C2]" />
+                <span>LinkedIn</span>
+              </a>
 
-              <div className="flex items-center gap-2 text-slate-400">
-                <span>LeetCode:</span>
-                <span className="font-mono text-[11px] bg-slate-900 px-1.5 py-0.5 rounded border border-slate-800 text-slate-400">
-                  {student.contact.leetcodeUrl}
-                </span>
-              </div>
+              <a
+                href={student.contact.leetcodeUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 hover:text-cyan-400 transition-colors"
+                aria-label="LeetCode profile"
+              >
+                <LeetCodeIcon className="w-4 h-4 text-[#FFA116]" />
+                <span>LeetCode</span>
+              </a>
 
               <a
                 href={`mailto:${student.contact.email}`}

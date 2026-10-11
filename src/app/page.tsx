@@ -6,10 +6,6 @@ import Hero from "@/components/Hero";
 import About from "@/components/About";
 import Education from "@/components/Education";
 import ResumeCard from "@/components/ResumeCard";
-import COATools from "@/components/COATools";
-import FeaturedProject from "@/components/FeaturedProject";
-import Achievements from "@/components/Achievements";
-import AssignmentAccordion from "@/components/AssignmentAccordion";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 
@@ -20,38 +16,27 @@ export default function Home() {
       <Navbar />
 
       <main className="flex-1">
-        {/* 1. Hero Section */}
+        {/* 1. Hero / Home Section */}
         <Hero />
 
-        {/* 2. About Me Section */}
+        {/* 2. About Me Section (Profile, Interests, Technical Skills, Goals) */}
         <About />
 
-        {/* Education Timeline */}
+        {/* 3. Education Timeline */}
         <Education />
 
-        {/* Resume Card Feature Container */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* 4. Resume Card Feature Container */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <ResumeCard />
         </div>
 
-        {/* 3. COA Tools Section (Number System Converter & Binary ALU) */}
-        <COATools />
-
-        {/* 4. GitHub Featured Project */}
-        <FeaturedProject />
-
-        {/* 5. Achievements & Gallery */}
-        <Achievements />
-
-        {/* 6. COA Assignments & Lecture Questions (12 Questions Accordion) */}
-        <AssignmentAccordion />
-
-        {/* 7. Contact Section */}
+        {/* 5. Contact Section */}
         <Contact />
       </main>
 
-      {/* 8. Footer */}
+      {/* Footer */}
       <Footer />
     </div>
   );
 }
+

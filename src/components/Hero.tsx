@@ -2,8 +2,10 @@
 
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { portfolioData } from "@/data/portfolio";
-import { ArrowDown, FileText, Sparkles, Code2, Cpu, BookOpen } from "lucide-react";
+import { ArrowDown, FileText, Sparkles, Code2, Cpu, BookOpen, ExternalLink } from "lucide-react";
+import { LinkedInIcon, LeetCodeIcon } from "@/components/Icons";
 
 export default function Hero() {
   const { student } = portfolioData;
@@ -80,33 +82,62 @@ export default function Hero() {
               </span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-3">
-              <a
-                href="#about"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-base shadow-sm hover:shadow transition-all group"
-              >
-                <span>Explore Portfolio</span>
-                <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
-              </a>
+            {/* Action Buttons & Social Profile Links */}
+            <div className="space-y-3 pt-3">
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3">
+                <a
+                  href="#about"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-blue-700 hover:bg-blue-800 text-white font-semibold text-sm shadow-sm hover:shadow transition-all group"
+                >
+                  <span>Explore Portfolio</span>
+                  <ArrowDown className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" />
+                </a>
 
-              <a
-                href={student.documents.resumePdf}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold text-base border border-slate-300 shadow-xs hover:border-slate-400 transition-all"
-              >
-                <FileText className="w-4 h-4 text-blue-600" />
-                <span>View Resume</span>
-              </a>
+                <a
+                  href={student.documents.resumePdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-white hover:bg-slate-50 text-slate-800 font-semibold text-sm border border-slate-300 shadow-xs hover:border-slate-400 transition-all"
+                >
+                  <FileText className="w-4 h-4 text-blue-600" />
+                  <span>View Resume</span>
+                </a>
 
-              <a
-                href="#coa-tools"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-base shadow-xs transition-all"
-              >
-                <Cpu className="w-4 h-4 text-cyan-400" />
-                <span>Interactive COA Tool</span>
-              </a>
+                <Link
+                  href="/coa-tools"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 text-white font-semibold text-sm shadow-xs transition-all"
+                >
+                  <Cpu className="w-4 h-4 text-cyan-400" />
+                  <span>Interactive COA Tool</span>
+                </Link>
+              </div>
+
+              {/* Social Profile Buttons (LinkedIn & LeetCode) */}
+              <div className="flex flex-wrap items-center justify-center lg:justify-start gap-2.5 pt-0.5">
+                <a
+                  href={student.contact.linkedinUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-blue-50 text-slate-800 hover:text-blue-700 border border-slate-200 shadow-2xs hover:shadow-xs text-xs sm:text-sm font-semibold transition-all group focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  aria-label="Subarna Lodh on LinkedIn"
+                >
+                  <LinkedInIcon className="w-4 h-4 text-[#0A66C2] group-hover:scale-110 transition-transform" />
+                  <span>LinkedIn</span>
+                  <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-blue-600 transition-colors" />
+                </a>
+
+                <a
+                  href={student.contact.leetcodeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white hover:bg-amber-50/50 text-slate-800 hover:text-amber-700 border border-slate-200 shadow-2xs hover:shadow-xs text-xs sm:text-sm font-semibold transition-all group focus:outline-none focus:ring-2 focus:ring-amber-500"
+                  aria-label="Subarna Lodh on LeetCode"
+                >
+                  <LeetCodeIcon className="w-4 h-4 text-[#FFA116] group-hover:scale-110 transition-transform" />
+                  <span>LeetCode</span>
+                  <ExternalLink className="w-3 h-3 text-slate-400 group-hover:text-amber-600 transition-colors" />
+                </a>
+              </div>
             </div>
 
           </div>
