@@ -8,6 +8,7 @@ import {
   ChevronUp,
   Search,
   FileText,
+  Download,
   Sparkles,
   ExternalLink,
   Layers,
@@ -48,6 +49,26 @@ export default function AssignmentAccordion() {
     );
   }, [assignments, searchQuery]);
 
+  const submissionSheets = [
+    {
+      eyebrow: "Assignment – I Submission Sheet",
+      title: "Computer Organization and Architecture (COA)",
+      section: student.section,
+      viewHref: student.documents.assignmentPdf,
+      viewLabel: "Original Assignment Document (PDF)",
+    },
+    {
+      eyebrow: "CASE STUDY – 4 SUBMISSION SHEET",
+      title: "CPU Pipelining and Performance Improvement",
+      subject: "Computer Organization and Architecture (COA)",
+      section: "25BAI-601",
+      viewHref: "/case-studies/cpu-pipelining-case-study.pdf",
+      viewLabel: "View Case Study (PDF)",
+      downloadHref: "/case-studies/cpu-pipelining-case-study.pdf",
+      downloadFilename: "cpu-pipelining-case-study.pdf",
+    },
+  ];
+
   return (
     <section id="assignments" className="py-16 sm:py-24 bg-white border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
@@ -66,49 +87,75 @@ export default function AssignmentAccordion() {
           </p>
         </div>
 
-        {/* Academic Submission Card / Header Bar */}
-        <div className="bg-slate-50 rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-2xs max-w-4xl mx-auto">
-          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
-            <div className="space-y-1">
-              <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 font-mono">
-                Assignment – I Submission Sheet
-              </span>
-              <h3 className="text-lg font-bold text-slate-900">
-                Computer Organization and Architecture (COA)
-              </h3>
-            </div>
-
-            <a
-              href={student.documents.assignmentPdf}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold border border-slate-200 shadow-2xs transition-colors"
+        {/* Academic Submission Cards / Header Bars */}
+        <div className="max-w-4xl mx-auto space-y-6">
+          {submissionSheets.map((sheet) => (
+            <div
+              key={sheet.eyebrow}
+              className="bg-slate-50 rounded-2xl p-6 sm:p-7 border border-slate-200 shadow-2xs"
             >
-              <FileText className="w-4 h-4 text-blue-600" />
-              <span>Original Assignment Document (PDF)</span>
-              <ExternalLink className="w-3 h-3 opacity-60" />
-            </a>
-          </div>
+              <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 pb-4 border-b border-slate-200">
+                <div className="space-y-1">
+                  <span className="text-[11px] font-bold uppercase tracking-wider text-blue-700 font-mono block">
+                    {sheet.eyebrow}
+                  </span>
+                  <h3 className="text-lg font-bold text-slate-900">
+                    {sheet.title}
+                  </h3>
+                  {sheet.subject && (
+                    <p className="text-xs sm:text-sm font-medium text-slate-600">
+                      {sheet.subject}
+                    </p>
+                  )}
+                </div>
 
-          {/* Academic Info Grid */}
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 text-xs">
-            <div className="bg-white p-3 rounded-xl border border-slate-200/80">
-              <span className="text-slate-400 block font-medium">Student Name</span>
-              <span className="font-bold text-slate-900 mt-0.5 block">{student.name}</span>
+                <div
+                  className={
+                    sheet.downloadHref
+                      ? "flex flex-col sm:flex-row sm:flex-wrap lg:flex-nowrap items-stretch sm:items-center gap-2.5 w-full md:w-auto md:justify-end shrink-0"
+                      : "shrink-0"
+                  }
+                >
+                  <a
+                    href={sheet.viewHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold border border-slate-200 shadow-2xs transition-colors whitespace-nowrap"
+                  >
+                    <FileText className="w-4 h-4 text-blue-600 shrink-0" />
+                    <span>{sheet.viewLabel}</span>
+                    <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
+                  </a>
+
+                  {sheet.downloadHref && (
+                    <a
+                      href={sheet.downloadHref}
+                      download={sheet.downloadFilename}
+                      className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold border border-slate-200 shadow-2xs transition-colors whitespace-nowrap"
+                    >
+                      <Download className="w-4 h-4 text-blue-600 shrink-0" />
+                      <span>Download PDF</span>
+                    </a>
+                  )}
+                </div>
+              </div>
+
+              {/* Academic Info Grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4 text-xs">
+                {[
+                  { label: "Student Name", value: student.name, valueClass: "font-bold text-slate-900" },
+                  { label: "UID", value: student.uid, valueClass: "font-mono font-bold text-blue-800" },
+                  { label: "Section", value: sheet.section, valueClass: "font-mono font-bold text-slate-900" },
+                  { label: "Faculty Mentor", value: student.submittedTo, valueClass: "font-bold text-slate-900" },
+                ].map((field) => (
+                  <div key={field.label} className="bg-white p-3 rounded-xl border border-slate-200/80">
+                    <span className="text-slate-400 block font-medium">{field.label}</span>
+                    <span className={`${field.valueClass} mt-0.5 block`}>{field.value}</span>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="bg-white p-3 rounded-xl border border-slate-200/80">
-              <span className="text-slate-400 block font-medium">UID</span>
-              <span className="font-mono font-bold text-blue-800 mt-0.5 block">{student.uid}</span>
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-slate-200/80">
-              <span className="text-slate-400 block font-medium">Section</span>
-              <span className="font-mono font-bold text-slate-900 mt-0.5 block">{student.section}</span>
-            </div>
-            <div className="bg-white p-3 rounded-xl border border-slate-200/80">
-              <span className="text-slate-400 block font-medium">Faculty Mentor</span>
-              <span className="font-bold text-slate-900 mt-0.5 block">{student.submittedTo}</span>
-            </div>
-          </div>
+          ))}
         </div>
 
         {/* Filter Controls & Search */}
