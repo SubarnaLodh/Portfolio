@@ -41,6 +41,7 @@ export default function AssignmentAccordion() {
     return assignments.filter(
       (a) =>
         a.question.toLowerCase().includes(q) ||
+        a.summary.toLowerCase().includes(q) ||
         a.answer.toLowerCase().includes(q) ||
         a.category.toLowerCase().includes(q) ||
         a.id.toString() === q
@@ -151,7 +152,7 @@ export default function AssignmentAccordion() {
               Collapse All
             </button>
             <span className="text-slate-400 ml-2 font-mono">
-              {filteredAssignments.length} / 12
+              {filteredAssignments.length} / {assignments.length}
             </span>
           </div>
 
@@ -169,6 +170,33 @@ export default function AssignmentAccordion() {
           ) : (
             filteredAssignments.map((item) => {
               const isOpen = openIds.includes(item.id);
+              const chevronIcon = isOpen ? (
+                <ChevronUp className="w-5 h-5" />
+              ) : (
+                <ChevronDown className="w-5 h-5" />
+              );
+              const headerInfo = (
+                <div className="flex items-start sm:items-center gap-3.5 min-w-0">
+                  <span
+                    className={`w-8 h-8 rounded-xl font-mono text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
+                      isOpen
+                        ? "bg-blue-700 text-white"
+                        : "bg-slate-100 text-slate-700 group-hover:bg-blue-100 group-hover:text-blue-800"
+                    }`}
+                  >
+                    {item.id < 10 ? `0${item.id}` : item.id}
+                  </span>
+
+                  <div className="space-y-0.5 min-w-0">
+                    <span className="text-[11px] font-semibold text-blue-700 uppercase tracking-wider block">
+                      {item.category}
+                    </span>
+                    <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                      {item.question}
+                    </h4>
+                  </div>
+                </div>
+              );
 
               return (
                 <div
@@ -180,41 +208,56 @@ export default function AssignmentAccordion() {
                   }`}
                 >
                   {/* Accordion Header / Toggle */}
-                  <button
-                    type="button"
-                    onClick={() => toggleAccordion(item.id)}
-                    aria-expanded={isOpen}
-                    className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 focus:outline-none focus:ring-2 focus:ring-blue-400 group"
-                  >
-                    <div className="flex items-start sm:items-center gap-3.5">
-                      <span
-                        className={`w-8 h-8 rounded-xl font-mono text-xs font-bold flex items-center justify-center shrink-0 transition-colors ${
-                          isOpen
-                            ? "bg-blue-700 text-white"
-                            : "bg-slate-100 text-slate-700 group-hover:bg-blue-100 group-hover:text-blue-800"
-                        }`}
+                  {item.pdfUrl ? (
+                    <div className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+                      <button
+                        type="button"
+                        onClick={() => toggleAccordion(item.id)}
+                        aria-expanded={isOpen}
+                        className="flex-1 min-w-0 text-left flex items-start sm:items-center justify-between gap-4 focus:outline-none focus:ring-2 focus:ring-blue-400 rounded-xl group cursor-pointer"
                       >
-                        {item.id < 10 ? `0${item.id}` : item.id}
-                      </span>
+                        {headerInfo}
+                        <div className="sm:hidden shrink-0 p-1.5 rounded-lg bg-slate-100 group-hover:bg-blue-50 text-slate-500 group-hover:text-blue-700 transition-colors">
+                          {chevronIcon}
+                        </div>
+                      </button>
 
-                      <div className="space-y-0.5">
-                        <span className="text-[11px] font-semibold text-blue-700 uppercase tracking-wider block">
-                          {item.category}
-                        </span>
-                        <h4 className="text-base sm:text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                          {item.question}
-                        </h4>
+                      <div className="flex items-center gap-2.5 pl-[46px] sm:pl-0 shrink-0">
+                        <a
+                          href={item.pdfUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white hover:bg-blue-50 text-blue-700 text-xs font-bold border border-slate-200 shadow-2xs transition-colors"
+                        >
+                          <FileText className="w-4 h-4 text-blue-600" />
+                          <span>View PDF</span>
+                          <ExternalLink className="w-3 h-3 opacity-60" />
+                        </a>
+
+                        <button
+                          type="button"
+                          onClick={() => toggleAccordion(item.id)}
+                          aria-expanded={isOpen}
+                          aria-label={isOpen ? `Collapse ${item.question}` : `Expand ${item.question}`}
+                          className="hidden sm:inline-flex shrink-0 p-1.5 rounded-lg bg-slate-100 hover:bg-blue-50 text-slate-500 hover:text-blue-700 transition-colors cursor-pointer"
+                        >
+                          {chevronIcon}
+                        </button>
                       </div>
                     </div>
-
-                    <div className="shrink-0 p-1.5 rounded-lg bg-slate-100 group-hover:bg-blue-50 text-slate-500 group-hover:text-blue-700 transition-colors">
-                      {isOpen ? (
-                        <ChevronUp className="w-5 h-5" />
-                      ) : (
-                        <ChevronDown className="w-5 h-5" />
-                      )}
-                    </div>
-                  </button>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => toggleAccordion(item.id)}
+                      aria-expanded={isOpen}
+                      className="w-full text-left p-5 sm:p-6 flex items-center justify-between gap-4 focus:outline-none focus:ring-2 focus:ring-blue-400 group"
+                    >
+                      {headerInfo}
+                      <div className="shrink-0 p-1.5 rounded-lg bg-slate-100 group-hover:bg-blue-50 text-slate-500 group-hover:text-blue-700 transition-colors">
+                        {chevronIcon}
+                      </div>
+                    </button>
+                  )}
 
                   {/* Accordion Body */}
                   {isOpen && (
@@ -229,7 +272,7 @@ export default function AssignmentAccordion() {
                       {/* Main Answer text from document */}
                       <div className="space-y-2">
                         <h5 className="text-xs font-bold uppercase tracking-wider text-slate-500">
-                          Complete Answer
+                          {item.pdfUrl ? "Case Study Description" : "Complete Answer"}
                         </h5>
                         <p className="text-sm sm:text-base leading-relaxed text-slate-800 whitespace-pre-line">
                           {item.answer}

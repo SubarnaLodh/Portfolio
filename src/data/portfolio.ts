@@ -5,6 +5,7 @@ export interface AssignmentItem {
   summary: string;
   answer: string;
   keyPoints?: string[];
+  pdfUrl?: string;
   tableData?: {
     headers: string[];
     rows: string[][];
@@ -540,6 +541,22 @@ export const portfolioData: PortfolioData = {
         "AMD (Advanced Micro Devices): Founded May 1, 1969 by Jerry Sanders and 7 co-founders (Santa Clara, CA, USA).",
         "Both companies emerged from Fairchild Semiconductor alumni and drove the evolution of the x86 microprocessor architecture.",
       ],
+    },
+    {
+      id: 13,
+      question: "CPU Pipelining and Performance Improvement",
+      category: "Academic Case Study",
+      summary:
+        "Computer Organization and Architecture (COA) case study comparing sequential and ideal five-stage pipelined execution.",
+      answer:
+        "An academic analysis of CPU instruction pipelining, comparing sequential and ideal five-stage pipelined execution. The study examines instruction execution stages, clock cycle calculations, performance improvement, and pipeline hazards.",
+      keyPoints: [
+        "Subject: Computer Organization and Architecture (COA).",
+        "Instruction Execution Stages: Compares sequential execution with ideal five-stage pipelined execution.",
+        "Performance Analysis: Examines clock cycle calculations, performance improvement, and pipeline hazards.",
+        "Key Concepts: CPU Pipelining, Computer Architecture, Instruction Execution, Performance Analysis.",
+      ],
+      pdfUrl: "/case-studies/cpu-pipelining-case-study.pdf",
     },
   ],
 };
