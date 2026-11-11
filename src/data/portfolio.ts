@@ -15,9 +15,11 @@ export interface AssignmentItem {
 export interface ProjectItem {
   title: string;
   category: string;
+  subject?: string;
   description: string;
-  repoUrl: string;
+  repoUrl?: string;
   readmeUrl?: string;
+  pdfUrl?: string;
   tags: string[];
   featured?: boolean;
 }
@@ -222,6 +224,20 @@ export const portfolioData: PortfolioData = {
       repoUrl:
         "https://github.com/SubarnaLodh/25bai10051_python-weather-app.git",
       tags: ["Python", "OpenWeather API", "GUI Application", "REST API"],
+    },
+    {
+      title: "CPU Pipelining and Performance Improvement",
+      category: "Academic Case Study",
+      subject: "Computer Organization and Architecture (COA)",
+      description:
+        "An academic analysis of CPU instruction pipelining, comparing sequential and ideal five-stage pipelined execution. The study examines instruction execution stages, clock cycle calculations, performance improvement, and pipeline hazards.",
+      pdfUrl: "/case-studies/cpu-pipelining-case-study.pdf",
+      tags: [
+        "CPU Pipelining",
+        "Computer Architecture",
+        "Instruction Execution",
+        "Performance Analysis",
+      ],
     },
   ],
 

@@ -4,6 +4,7 @@ import React from "react";
 import { portfolioData } from "@/data/portfolio";
 import {
   FileCode,
+  FileText,
   ExternalLink,
   Cpu,
   GitBranch,
@@ -23,6 +24,7 @@ export default function FeaturedProject() {
     "Student Management System": <Users className="w-5 h-5 text-indigo-600" />,
     "Cyber Threat Dashboard": <Shield className="w-5 h-5 text-rose-600" />,
     "Weather Forecasting Application": <CloudSun className="w-5 h-5 text-amber-600" />,
+    "CPU Pipelining and Performance Improvement": <Cpu className="w-5 h-5 text-cyan-600" />,
   };
 
   return (
@@ -170,56 +172,79 @@ export default function FeaturedProject() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {otherProjects.map((proj) => (
-                <div
-                  key={proj.title}
-                  className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-xs">
-                        {otherProjectIcons[proj.title] || <Layers className="w-5 h-5 text-blue-600" />}
-                      </div>
-                      <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md">
-                        {proj.category}
-                      </span>
-                    </div>
+              {otherProjects.map((proj) => {
+                const action = proj.pdfUrl
+                  ? {
+                      href: proj.pdfUrl,
+                      label: "View Case Study",
+                      icon: <FileText className="w-3.5 h-3.5" />,
+                    }
+                  : proj.repoUrl
+                    ? {
+                        href: proj.repoUrl,
+                        label: "View Repository",
+                        icon: <GitHubIcon className="w-3.5 h-3.5" />,
+                      }
+                    : null;
 
-                    <div>
-                      <h4 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
-                        {proj.title}
-                      </h4>
-                      <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
-                        {proj.description}
-                      </p>
-                    </div>
-
-                    <div className="flex flex-wrap gap-1.5 pt-1">
-                      {proj.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="px-2 py-0.5 rounded bg-white text-slate-700 text-[11px] font-medium border border-slate-200"
-                        >
-                          {t}
+                return (
+                  <div
+                    key={proj.title}
+                    className="bg-slate-50/80 rounded-2xl p-6 border border-slate-200 shadow-xs hover:shadow-md hover:border-blue-300 transition-all flex flex-col justify-between group"
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between gap-2">
+                        <div className="w-10 h-10 rounded-xl bg-white border border-slate-200 flex items-center justify-center shadow-xs shrink-0">
+                          {otherProjectIcons[proj.title] || <Layers className="w-5 h-5 text-blue-600" />}
+                        </div>
+                        <span className="text-[11px] font-semibold text-blue-700 bg-blue-50 border border-blue-200/60 px-2.5 py-1 rounded-md text-right">
+                          {proj.category}
                         </span>
-                      ))}
-                    </div>
-                  </div>
+                      </div>
 
-                  <div className="mt-6 pt-4 border-t border-slate-200/80 flex items-center justify-between">
-                    <a
-                      href={proj.repoUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 group-hover:underline"
-                    >
-                      <GitHubIcon className="w-3.5 h-3.5" />
-                      <span>View Repository</span>
-                      <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
-                    </a>
+                      <div>
+                        <h4 className="text-lg font-bold text-slate-900 group-hover:text-blue-700 transition-colors">
+                          {proj.title}
+                        </h4>
+                        {proj.subject && (
+                          <p className="text-xs font-semibold text-blue-700 mt-1">
+                            {proj.subject}
+                          </p>
+                        )}
+                        <p className="text-xs sm:text-sm text-slate-600 mt-2 leading-relaxed">
+                          {proj.description}
+                        </p>
+                      </div>
+
+                      <div className="flex flex-wrap gap-1.5 pt-1">
+                        {proj.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="px-2 py-0.5 rounded bg-white text-slate-700 text-[11px] font-medium border border-slate-200"
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
+                    </div>
+
+                    {action && (
+                      <div className="mt-6 pt-4 border-t border-slate-200/80 flex items-center justify-between">
+                        <a
+                          href={action.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1.5 text-xs font-bold text-blue-700 hover:text-blue-900 group-hover:underline"
+                        >
+                          {action.icon}
+                          <span>{action.label}</span>
+                          <ArrowUpRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                        </a>
+                      </div>
+                    )}
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </div>
         )}
